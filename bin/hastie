@@ -3,4 +3,10 @@
 
 require 'hastie/generator'
 
-Hastie::ReportGenerator.start
+command = ARGV.shift
+
+case command
+when "start"
+when "create"
+  Hastie::ReportGenerator.start ARGV
+end

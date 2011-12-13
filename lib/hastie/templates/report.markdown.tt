@@ -1,0 +1,9 @@
+---
+layout: report
+title: <%= title %>
+analyst: <%= analyst %>
+researcher: <%= researcher %> 
+pi: <%= pi %>
+data:
+- <%= data_dir %>
+---
