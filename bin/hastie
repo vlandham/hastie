@@ -3,4 +3,4 @@
 
 require 'hastie/generator'
 
-Hastie::Generator.start
+Hastie::ReportGenerator.start
