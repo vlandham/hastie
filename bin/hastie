@@ -2,11 +2,15 @@
 # -*- mode: ruby -*-
 
 require 'hastie/report_generator'
+require 'hastie/report_publisher'
 
 command = ARGV.shift
 
-  Hastie::ReportGenerator.start ARGV
 case command
-when "start"
-when "create"
+when "start","create"
+  Hastie::ReportGenerator.start ARGV
+when "publish"
+  Hastie::ReportPublisher.start ARGV
+else
+  puts "Not a recognized command: #{command}"
 end

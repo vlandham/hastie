@@ -40,7 +40,9 @@ module Hastie
     def create_report_file
       extension = determine_extension(options[:type])
       template_file = "templates/report.#{extension}.tt"
-      template template_file, "#{report_id}/#{report_id}.#{extension}"
+      report_filename = "#{report_id}.#{extension}"
+      template template_file, "#{report_id}/#{report_filename}"
+      options[:report_file] = report_filename
     end
 
     def create_image_dir
@@ -64,7 +66,7 @@ module Hastie
     end
 
     def write_config_file
-      output_config_file = File.join report_id, Hastie.report_name
+      output_config_file = File.join report_id, Hastie.report_config_name
       say_status "write", "#{File.basename(output_config_file)}"
       ConfigFile.write(output_config_file, options)
     end

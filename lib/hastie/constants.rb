@@ -11,7 +11,7 @@ module Hastie
     CONFIG_FILE
   end
 
-  def self.report_name
+  def self.report_config_name
     REPORT_CONFIG_FILE
   end
 end
