@@ -22,11 +22,14 @@ module Hastie
       # report_id will be used internally in case the name turns
       # out to be too loose to use
       self.report_id = name
+
       options[:report_id] = self.report_id
-      say_status "create", "report directory: #{report_id}"
+
+      options[:analyst] ||= "unknown"
       self.analyst = options[:analyst] || "unknown"
-      self.researcher = options[:researcher] || "unknown"
-      self.pi = options[:pi] || "unknown"
+      options[:researcher] ||= "unknown"
+      options[:pi] ||= "unknown"
+      options[:data_dir] ||= data_dir
     end
 
     def check_name_availible
@@ -38,6 +41,7 @@ module Hastie
     end
 
     def create_report_file
+      say_status "create", "report directory: #{options[:report_id]}"
       extension = determine_extension(options[:type])
       template_file = "templates/report.#{extension}.tt"
       report_filename = "#{report_id}.#{extension}"

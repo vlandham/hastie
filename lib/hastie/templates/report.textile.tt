@@ -8,12 +8,12 @@ data:
 - <%= options[:data_dir] %>/
 ---
 
-## Objective
+h2. Objective
 
-## Data
+h2. Data
 
-## Analysis
+h2. Analysis
 
-### Methods
+h3. Methods
 
-### Results
+h3. Results
