@@ -7,3 +7,13 @@ pi: <%= pi %>
 data:
 - <%= data_dir %>
 ---
+
+## Objective
+
+## Data
+
+## Analysis
+
+### Methods
+
+### Results
