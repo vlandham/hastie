@@ -1,16 +1,23 @@
 #!/usr/bin/env ruby
 # -*- mode: ruby -*-
 
+# require 'rubygems'
+# puts Gem.loaded_specs["jekyll"].bindir
+
 require 'hastie/report_generator'
-require 'hastie/report_publisher'
+require 'hastie/report_generator'
 
 command = ARGV.shift
+
 
 case command
 when "start","create"
   Hastie::ReportGenerator.start ARGV
 when "publish"
   Hastie::ReportPublisher.start ARGV
+when "watch", "monitor"
+  puts "Starting Jekyll..."
+  exec("jekyll --auto --server #{ARGV}")
 else
   puts "Not a recognized command: #{command}"
 end
