@@ -9,8 +9,10 @@ class ReportGeneratorChild < Hastie::ReportGenerator
     end
   end
 end
+
 describe Hastie::ReportGenerator, fakefs: true do
   before :each do
+    # tested in server_reader_spec.rb
     FakeFsHelper.stub_config_file
     FakeFsHelper.stub_reports_file
     FakeFsHelper.stub_server_config
@@ -26,6 +28,17 @@ describe Hastie::ReportGenerator, fakefs: true do
         lambda { ReportGeneratorChild.start [project] }.should raise_error SystemExit
       end
       content.should match /#{project} is already/
+    end
+  end
+
+  describe "create report framework" do
+    it "should create template report file" do
+      project = "fake_project_name"
+
+      # content = capture(:stdout) {ReportGeneratorChild.start [project] }
+      # puts content
+      # File.exists?(File.join(project, "#{project}.markdown")).should == true
+
     end
   end
 end
