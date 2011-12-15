@@ -70,5 +70,18 @@ describe Hastie::ReportGenerator, fakefs: true do
       last_output = output[-1]
       last_output["server_root"].should == FakeFsHelper::SERVER_DIR
     end
+
+  end
+  it "should take server_root as input parameter" do
+    FakeFsHelper.stub_config_file
+    new_dir = "/another/path/to/server"
+
+    FakeFsHelper.stub_server_dir new_dir
+    FakeFsHelper.stub_server_config new_dir
+    FakeFsHelper.stub_reports_file new_dir
+    input = ["--server_root", new_dir]
+    output = ServerReaderChild.start input
+    last_output = output[-1]
+    last_output["server_root"].should == new_dir
   end
 end
