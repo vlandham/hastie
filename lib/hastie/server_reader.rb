@@ -9,6 +9,12 @@ module Hastie
     include Thor::Actions
     class_option :server_root, :aliases => "-s", :desc => "Root directory of the server to read / publish to"
 
+    no_tasks do
+      def config_file
+        Hastie.config_file
+      end
+    end
+
     def self.source_root
       File.dirname(__FILE__)
     end
@@ -16,11 +22,11 @@ module Hastie
     # Tries to access users config file
     # loads contents into the options hash
     def read_config_file
-      if !File.exists? Hastie.config_file
-        say "No config file found. Please create #{Hastie.config_file}"
+      if !File.exists? self.config_file
+        say "No config file found. Please create #{self.config_file}"
         exit(1)
       end
-      config = ConfigFile.load(Hastie.config_file)
+      config = ConfigFile.load(self.config_file)
       self.options = config.merge(self.options)
     end
 
@@ -37,7 +43,7 @@ module Hastie
       # Check for config file inside server_root
       server_config_file = File.join(options[:server_root], SERVER_CONFIG_FILE)
       if !File.exists? server_config_file
-        say "Cannot find config file in server directory:"
+        say "Cannot find #{SERVER_CONFIG_FILE} file in server directory:"
         say server_config_file
         say ""
         say "Are you sure #{options[:server_root]} is a valid server directory?"
@@ -47,7 +53,7 @@ module Hastie
       # Check for reports file inside server_root
       server_report_file = File.join(options[:server_root], SERVER_REPORTS_FILE)
       if !File.exists? server_report_file
-        say "Cannot find report file in server directory:"
+        say "Cannot find #{SERVER_REPORTS_FILE} file in server directory:"
         say server_report_file
         say ""
         say "Are you sure #{options[:server_root]} is a valid server directory?"

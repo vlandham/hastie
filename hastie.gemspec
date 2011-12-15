@@ -4,9 +4,9 @@ require File.expand_path('../lib/hastie/version', __FILE__)
 Gem::Specification.new do |s|
   s.add_dependency "thor", "~> 0.14.6"
   s.add_development_dependency "bundler", "~> 1.0"
-  # s.add_development_dependency "rdoc", "~> 2.5"
-  # s.add_development_dependency "rspec", "~> 2.3"
-  # s.add_development_dependency "simplecov", "~> 0.4"
+  s.add_development_dependency "rdoc", "~> 3.9"
+  s.add_development_dependency "rspec", "~> 2.3"
+  s.add_development_dependency "simplecov", "~> 0.4"
   # s.add_development_dependency "ZenTest", "~> 4.5.0"
   # s.add_development_dependency "autotest-fsevent", "~> 0.2.5"
   # s.add_development_dependency "autotest-growl", "~> 0.2.9"
