@@ -66,7 +66,7 @@ module Hastie
       server_config = ConfigFile.load(server_config_file, :server)
       self.options = server_config.merge(self.options)
 
-      server_reports = ConfigFile.load(server_report_file, :reports)
+      server_reports = ConfigFile.load(server_report_file, :published_reports)
       self.options = server_reports.merge(self.options)
     end
   end

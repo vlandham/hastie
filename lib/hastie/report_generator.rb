@@ -16,6 +16,7 @@ module Hastie
     class_option :pi, :aliases => "-p", :desc => "PI the researcher is under"
 
     def setup_variables
+      options[:type] ||= "markdown"
       options[:name] = name
       self.title = name.gsub("_", " ").capitalize
       options[:title] = self.title
@@ -33,9 +34,10 @@ module Hastie
     end
 
     def check_name_availible
+      puts options[:published_reports]
       if options[:published_reports] and options[:published_reports].include? report_id
-        say "Sorry, the report name #{report_id} is already a published report"
-        say "Please run again with a different name"
+        say_status "error", "Sorry, the #{report_id} is already a published report", :red
+        say_status "error", "Please run again with a different name", :red
         exit(1)
       end
     end
