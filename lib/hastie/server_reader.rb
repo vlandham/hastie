@@ -34,7 +34,7 @@ module Hastie
     def get_server_config
       # First check if the server directory exists
       if !File.directory? options[:server_root]
-        say "Cannot find server directory:"
+        say_status "error", "Cannot find server directory:", :red
         say options[:server_root]
         say "Please modify \'server_root\' to point to server root directory"
         exit(1)
@@ -43,7 +43,7 @@ module Hastie
       # Check for config file inside server_root
       server_config_file = File.join(options[:server_root], SERVER_CONFIG_FILE)
       if !File.exists? server_config_file
-        say "Cannot find #{SERVER_CONFIG_FILE} file in server directory:"
+        say_status "error", "Cannot find #{SERVER_CONFIG_FILE} file in server directory:", :red
         say server_config_file
         say ""
         say "Are you sure #{options[:server_root]} is a valid server directory?"
@@ -53,7 +53,7 @@ module Hastie
       # Check for reports file inside server_root
       server_report_file = File.join(options[:server_root], SERVER_REPORTS_FILE)
       if !File.exists? server_report_file
-        say "Cannot find #{SERVER_REPORTS_FILE} file in server directory:"
+        say_status "error", "Cannot find #{SERVER_REPORTS_FILE} file in server directory:", :red
         say server_report_file
         say ""
         say "Are you sure #{options[:server_root]} is a valid server directory?"
