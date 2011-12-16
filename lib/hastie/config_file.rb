@@ -8,6 +8,9 @@ module Hastie
     # outputs thor's hash with indifferent access of content
     # if input file cannot be read, empty thor hash is returned
     def self.load filename, root = nil
+      if !File.exists? filename
+        return
+      end
       output = Thor::CoreExt::HashWithIndifferentAccess.new()
       config = YAML.load(File.read(filename))
       if config

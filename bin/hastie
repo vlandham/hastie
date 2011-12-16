@@ -5,7 +5,8 @@
 # puts Gem.loaded_specs["jekyll"].bindir
 
 require 'hastie/report_generator'
-require 'hastie/report_generator'
+require 'hastie/report_publisher'
+require 'hastie/server_generator'
 
 module Hastie
   module Executable
@@ -41,6 +42,8 @@ Hastie publish options:
         exec("jekyll --auto --server #{ARGV}")
       when "publish"
         Hastie::ReportPublisher.start ARGV
+      when "server_start"
+        Hastie::ServerGenerator.start ARGV
       else
         puts Hastie::Executable::HELP
       end

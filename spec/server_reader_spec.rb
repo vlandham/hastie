@@ -93,8 +93,11 @@ describe ServerReaderChild, fakefs: true do
     it "should report options when all required files are present" do
       FakeFsHelper.stub_server_config
       FakeFsHelper.stub_reports_file
-      lambda { ServerReaderChild.start }.should_not raise_error SystemExit
-      output = ServerReaderChild.start
+      content = capture(:stdout) do
+        lambda { ServerReaderChild.start }.should_not raise_error SystemExit
+      end
+      output = []
+      content = capture(:stdout) { output = ServerReaderChild.start }
       last_output = output[-1]
       last_output["server_root"].should == FakeFsHelper::SERVER_DIR
     end
@@ -109,7 +112,8 @@ describe ServerReaderChild, fakefs: true do
     FakeFsHelper.stub_reports_file new_dir
 
     input = ["--server_root", new_dir]
-    output = ServerReaderChild.start input
+    output = []
+    content = capture(:stdout) { output = ServerReaderChild.start input}
     last_output = output[-1]
     last_output["server_root"].should == new_dir
   end
