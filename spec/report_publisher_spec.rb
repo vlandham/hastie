@@ -1,3 +1,4 @@
+require 'grit'
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 require File.expand_path(File.dirname(__FILE__) + '/fakefs_helper')
 require 'hastie/report_publisher'
@@ -12,14 +13,48 @@ describe Hastie::ReportPublisher do
     end
   end
 
-end
+  before :each do
+    @config_file = File.expand_path(File.join(File.dirname(__FILE__), "fixtures", "hastie_config"))
+    @org_server_dir = File.expand_path(File.join(File.dirname(__FILE__), "fixtures", "server"))
+    @org_report_dir = File.expand_path(File.join(File.dirname(__FILE__), "fixtures", "report"))
 
-class ReportGeneratorChild < Hastie::ReportGenerator
-  no_tasks do
-    def config_file
-      FakeFsHelper::CONFIG_FILE
-    end
+    @sandbox = File.expand_path(File.join(File.dirname(__FILE__), "sandbox"))
+
+    @server_dir = File.join(@sandbox, "server")
+    @report_dir = File.join(@sandbox, "report")
+
+    FileUtils.mkdir_p @sandbox
+
+    FileUtils.cp_r @org_server_dir, @server_dir
+    FileUtils.cp_r @org_report_dir, @report_dir
+    Grit::Repo.init(@server_dir)
+
+    @input = [@report_dir, "--config_file", @config_file, "--server_root", @server_dir]
   end
+
+  after :each do
+    FileUtils.rm_r @sandbox if File.exists?(@sandbox)
+  end
+
+  it "should copy new report into reports_dir" do
+    content = capture(:stdout) do
+      lambda { Hastie::ReportPublisher.start @input }.should_not raise_error SystemExit
+    end
+
+    File.exists?(File.join(@server_dir, "_posts", "report.textile")).should == true
+    File.exists?(File.join(@server_dir, "imgs", "report")).should == true
+    File.exists?(File.join(@server_dir, "data", "report")).should == true
+  end
+
+  it "should update git repository with new commit" do
+    content = capture(:stdout) do
+      lambda { Hastie::ReportPublisher.start @input }.should_not raise_error SystemExit
+    end
+
+    commits = Grit::Repo.new(@server_dir).commits
+    commits[0].message.should match /update with report: report/
+  end
+
 end
 
 describe Hastie::ReportPublisher, fakefs: true do
@@ -93,6 +128,5 @@ describe Hastie::ReportPublisher, fakefs: true do
     end
 
     File.exist?(File.join(FakeFsHelper::SERVER_DIR, "_posts", "report.textile")).should == true
-    #content.should match /[Mm]issing reports_dir/
   end
 end

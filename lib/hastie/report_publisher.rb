@@ -45,6 +45,11 @@ module Hastie
       end
     end
 
+    def set_destination_directory
+      self.destination_root = File.join(options[:server_root])
+      say_status "note", "root: #{self.destination_root}"
+    end
+
     def copy_report_file
       report_filename = options[:local]["report_file"]
       local_report = File.join(report_dir, report_filename)
@@ -55,6 +60,38 @@ module Hastie
       else
         say_status "error", "Report file not found: #{report_filename}", :red
         exit(1)
+      end
+    end
+
+    def copy_img_directory
+      img_dir = File.join(report_dir, IMGS_ROOT, options[:local]["report_id"])
+      destination_img_dir = File.join(options[:server_root], IMGS_ROOT)
+      if File.exists? img_dir
+        say_status "publishing", img_dir
+        FileUtils.cp_r img_dir, destination_img_dir
+      else
+        say_status "warning", "report image directory not found #{img_dir}"
+      end
+    end
+
+    def copy_data_directory
+      data_dir = File.join(report_dir, DATA_ROOT, options[:local]["report_id"])
+      destination_dir = File.join(options[:server_root], DATA_ROOT)
+      if File.exists? data_dir
+        say_status "publishing", data_dir
+        FileUtils.cp_r data_dir, destination_dir
+      else
+        say_status "warning", "report data directory not found #{data_dir}"
+      end
+    end
+
+    def update_git_repo
+      in_root do
+        say_status "note", "updating git repository"
+        repo = Grit::Repo.new(".")
+        all_files = Dir.glob("./**")
+        repo.add(all_files)
+        repo.commit_all("update with report: #{options[:local]["report_id"]}")
       end
     end
   end
