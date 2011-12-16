@@ -47,6 +47,7 @@ describe Hastie::ReportGenerator do
     File.directory?(File.join(@output_dir, "_plugins")).should == true
     File.directory?(File.join(@output_dir, "_includes")).should == true
     File.exists?(File.join(@output_dir, "_config.yml")).should == true
+    File.exists?(File.join(@output_dir, "report.yml")).should == true
   end
 
   describe "input options" do
