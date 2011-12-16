@@ -26,7 +26,6 @@ Hastie publish options:
 
 Hastie server_start options:
   Use 'hastie server_start -h' for more information on publish options
-
 </code>
 
 
