@@ -1,4 +1,11 @@
 Gemfile.lock
 demo/*
 coverage/*
+spec/sandbox/*
+spec/reports/*
+.DS_Store
+.config
+.bundle
+doc/*
+pkg/*
 

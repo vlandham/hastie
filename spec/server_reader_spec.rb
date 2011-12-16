@@ -15,8 +15,36 @@ class ServerReaderChild < Hastie::ServerReader
   end
 end
 
-describe Hastie::ReportGenerator, fakefs: true do
+describe Hastie::ServerReader, fakefs: true do
+  it "should take config_file as input parameter" do
+    other_config_file = "/tmp/temp_config_file"
+    other_dir = "/tmp/server_dir_path"
+    FakeFsHelper.stub_config_file other_config_file, other_dir
+    FakeFsHelper.stub_server_dir other_dir
+    FakeFsHelper.stub_server_config other_dir
+    FakeFsHelper.stub_reports_file other_dir
 
+    input = ["--config_file", other_config_file]
+    output = Hastie::ServerReader.start input
+    last_output = output[-1]
+    last_output["config_file"].should == other_config_file
+  end
+end
+
+describe Hastie::ServerReader do
+  it "should read from config file on real file system" do
+    config_file = File.expand_path(File.join(File.dirname(__FILE__), "fixtures", "hastie_config"))
+    server_dir = File.expand_path(File.join(File.dirname(__FILE__), "fixtures", "server"))
+    input = ["--config_file", config_file, "--server_root", server_dir]
+    content = capture(:stdout) do
+      lambda { Hastie::ServerReader.start input }.should_not raise_error SystemExit
+    end
+    content.should match /#{config_file}/
+    content.should match /#{server_dir}/
+  end
+end
+
+describe ServerReaderChild, fakefs: true do
   describe "missing config file" do
     it "should report missing config file and exit" do
       content = capture(:stdout) do
@@ -79,6 +107,7 @@ describe Hastie::ReportGenerator, fakefs: true do
     FakeFsHelper.stub_server_dir new_dir
     FakeFsHelper.stub_server_config new_dir
     FakeFsHelper.stub_reports_file new_dir
+
     input = ["--server_root", new_dir]
     output = ServerReaderChild.start input
     last_output = output[-1]

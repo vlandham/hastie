@@ -17,14 +17,15 @@ module Hastie
 
     def setup_variables
       options[:type] ||= "markdown"
-      options[:name] = name
+      options[:name] = File.basename(name)
       self.title = name.gsub("_", " ").capitalize
       options[:title] = self.title
       # report_id will be used internally in case the name turns
       # out to be too loose to use
-      self.report_id = name
-
+      self.report_id = File.basename(name)
       options[:report_id] = self.report_id
+      self.destination_root = File.join(File.dirname(name), self.report_id)
+      say_status "note", "root: #{self.destination_root}"
 
       options[:analyst] ||= "unknown"
       self.analyst = options[:analyst] || "unknown"
@@ -34,7 +35,6 @@ module Hastie
     end
 
     def check_name_availible
-      puts options[:published_reports]
       if options[:published_reports] and options[:published_reports].include? report_id
         say_status "error", "Sorry, the #{report_id} is already a published report", :red
         say_status "error", "Please run again with a different name", :red
@@ -47,32 +47,32 @@ module Hastie
       extension = determine_extension(options[:type])
       template_file = "templates/report.#{extension}.tt"
       report_filename = "#{report_id}.#{extension}"
-      template template_file, "#{report_id}/#{report_filename}"
+      say_status  "note", "report file: #{report_filename}"
+      template template_file, report_filename
       options[:report_file] = report_filename
     end
 
     def create_image_dir
-      create_file File.join(self.report_id, data_dir, ".gitignore"), :verbose => true
+      create_file File.join(data_dir, ".gitignore"), :verbose => true
     end
 
     def create_data_dir
-      create_file File.join(self.report_id, imgs_dir, ".gitignore"), :verbose => true
+      create_file File.join(imgs_dir, ".gitignore"), :verbose => true
     end
 
     def fetch_static_files
       options[:server]["static"] ||= []
       options[:server]["static"].each do |static_file|
         static_path = File.join(options[:server_root], static_file)
-        destination_root = File.join(self.destination_root, report_id)
         if File.exists? static_path
           say_status "copy", "#{static_path} to #{File.basename(destination_root)}"
-          FileUtils.cp_r static_path, destination_root
+          FileUtils.cp_r static_path, self.destination_root
         end
       end
     end
 
     def write_config_file
-      output_config_file = File.join report_id, Hastie.report_config_name
+      output_config_file = File.join(self.destination_root, Hastie.report_config_name)
       say_status "write", "#{File.basename(output_config_file)}"
       ConfigFile.write(output_config_file, options)
     end
@@ -94,11 +94,11 @@ module Hastie
       end
 
       def data_dir
-        File.join(DATA_ROOT, name)
+        File.join(DATA_ROOT, options[:report_id])
       end
 
       def imgs_dir
-        File.join(IMGS_ROOT, name)
+        File.join(IMGS_ROOT, options[:report_id])
       end
     end
   end

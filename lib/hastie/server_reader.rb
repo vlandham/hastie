@@ -8,10 +8,16 @@ module Hastie
   class ServerReader < Thor::Group
     include Thor::Actions
     class_option :server_root, :aliases => "-s", :desc => "Root directory of the server to read / publish to"
+    class_option :config_file, :aliases => "-c", :desc => "Path to .hastie config file", :default => Hastie.config_file
 
     no_tasks do
       def config_file
-        Hastie.config_file
+        @config_file ||= if options[:config_file]
+                           File.expand_path(options[:config_file]) 
+                           else
+                             Hastie.config_file
+                           end
+        @config_file
       end
     end
 
@@ -22,6 +28,7 @@ module Hastie
     # Tries to access users config file
     # loads contents into the options hash
     def read_config_file
+      say_status "note", "config file: #{self.config_file}"
       if !File.exists? self.config_file
         say "No config file found. Please create #{self.config_file}"
         exit(1)
@@ -32,6 +39,7 @@ module Hastie
 
     # Tries to access the servers
     def get_server_config
+      say_status "note", "server root: #{options[:server_root]}"
       # First check if the server directory exists
       if !File.directory? options[:server_root]
         say_status "error", "Cannot find server directory:", :red

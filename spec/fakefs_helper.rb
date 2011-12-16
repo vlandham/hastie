@@ -4,9 +4,9 @@ class FakeFsHelper
   REPORTS_FILE = "_reports.yml"
   SERVER_CONFIG_FILE = "_config.yml"
 
-  def self.stub_config_file server_dir = SERVER_DIR
-    FileUtils.mkdir(File.dirname(CONFIG_FILE))
-    File.open(CONFIG_FILE, 'w') do |file|
+  def self.stub_config_file config_file = CONFIG_FILE, server_dir = SERVER_DIR
+    FileUtils.mkdir(File.dirname(config_file))
+    File.open(config_file, 'w') do |file|
       file.puts "server_root: #{server_dir}"
     end
   end
