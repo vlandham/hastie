@@ -17,15 +17,19 @@ Hastie Commands:
   version - Print version number and exit
   help    - Print this help and exit
   start   - Create new report directory framework with given name
-  watch   - Monitor current directory for changes,
-             updating local copy of report
+  watch   - Monitor current directory for changes.
+            Updates local copy of report
   publish - Send report to server. Update published reports
+  server_start - Create new server directory framework with given name
 
 Hastie start options:
   Use 'hastie start -h' for more information on start options
 
 Hastie publish options:
   Use 'hastie publish -h' for more information on publish options
+
+Hastie server_start options:
+  Use 'hastie server_start -h' for more information on publish options
 
     HELP
 
