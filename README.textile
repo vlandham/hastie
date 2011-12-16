@@ -6,7 +6,7 @@ h2. What is Hastie?
 
 h2. Hastie features
 
-<code>
+<pre>
 Usage: hastie [ command ] <command-options>
 
 Hastie Commands:
@@ -26,7 +26,7 @@ Hastie publish options:
 
 Hastie server_start options:
   Use 'hastie server_start -h' for more information on publish options
-</code>
+</pre>
 
 
 h2. Whats in a name?
