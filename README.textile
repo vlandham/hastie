@@ -1,0 +1,12 @@
+h1. Hastie
+
+A tool to extend Jekyll for use in report creation.
+
+h2. What is Hastie?
+
+h2. Hastie features
+
+
+h2. Whats in a name?
+
+In Strange Case of Dr. Jekyll and Mr. Hyde, "Dr. Hastie Lanyon":http://en.wikipedia.org/wiki/Strange_Case_of_Dr_Jekyll_and_Mr_Hyde#Dr_Hastie_Lanyon finds Jekyll ideas *too fanciful*.
