@@ -22,6 +22,13 @@ class FakeFsHelper
     end
   end
 
+  def self.add_reports_dir dir = SERVER_DIR
+    stub_server_config dir
+    File.open(File.join(dir, SERVER_CONFIG_FILE), 'a') do |file|
+      file.puts "reports_dir: _posts"
+    end
+  end
+
   def self.add_static_files dir = SERVER_DIR
     stub_server_config dir
     static_dirs = ["css", "js", "_layouts", "_includes", "_plugins"]
@@ -34,8 +41,6 @@ class FakeFsHelper
 
     static_dirs.each {|sdir| FileUtils.mkdir File.join(dir, sdir)}
     static_files.each {|sfile| FileUtils.touch File.join(dir, sfile)}
-
-
   end
 
   def self.stub_reports_file dir = SERVER_DIR

@@ -8,7 +8,7 @@ module Hastie
     attr_accessor :report_dir
     desc "Publishes report to server"
     argument :name, :type => :string, :default => ".", :desc => "The name report directory"
-# no_tasks do
+
     def read_report_file
       self.report_dir = File.expand_path(name)
       report_config_file = File.join(report_dir, Hastie.report_config_name)
@@ -21,12 +21,12 @@ module Hastie
       local_config = ConfigFile.load(report_config_file, :local)
       self.options = local_config.merge(self.options)
     end
-# end
+
     def check_options
       all_valid = true
       required_server_options = ["reports_dir"]
       required_server_options.each do |option|
-        if !options[:server][option]
+        if !options[:server] or !options[:server][option]
           say_status "error", "Missing #{option} option from server config", :red
           all_valid = false
         end
@@ -34,7 +34,7 @@ module Hastie
 
       required_local_options = ["report_file", "report_id"]
       required_local_options.each do |option|
-        if !options[:local][option]
+        if !options[:local] or !options[:local][option]
           say_status "error", "Missing #{option} option from local config", :red
           all_valid = false
         end
