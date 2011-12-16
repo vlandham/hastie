@@ -1,0 +1,23 @@
+---
+published_reports:
+- jfv_mak_snp_analysis
+server:
+  static:
+  - css
+  - js
+  - _layouts
+  - _includes
+  - _plugins
+  - _config.yml
+  reports_dir: _posts
+server_root: spec/fixtures/server/
+analyst: jfv
+type: textile
+config_file: /Users/jfv/.hastie
+name: report
+title: Spec/fixtures/report
+report_id: report
+researcher: unknown
+pi: unknown
+data_dir: data/report
+report_file: report.textile

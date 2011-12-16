@@ -1,0 +1,19 @@
+---
+layout: report
+title: Spec/fixtures/report
+analyst: jfv
+researcher: unknown 
+pi: unknown
+data:
+- data/report/
+---
+
+h2. Objective
+
+h2. Data
+
+h2. Analysis
+
+h3. Methods
+
+h3. Results

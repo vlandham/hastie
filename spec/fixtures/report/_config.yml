@@ -1,0 +1,9 @@
+static:
+- css
+- js
+- _layouts
+- _includes
+- _plugins
+- _config.yml
+
+reports_dir: _posts
