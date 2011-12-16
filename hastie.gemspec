@@ -3,6 +3,7 @@ require File.expand_path('../lib/hastie/version', __FILE__)
 
 Gem::Specification.new do |s|
   s.add_dependency "thor", "~> 0.14.6"
+  s.add_dependency "grit", "~> 2.4.1"
   s.add_development_dependency "bundler", "~> 1.0"
   s.add_development_dependency "rdoc", "~> 3.9"
   s.add_development_dependency "rspec", "~> 2.3"

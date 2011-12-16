@@ -56,5 +56,13 @@ describe Hastie::ServerGenerator do
     config_content = read_file config_file
     config_content.should match /reports_dir:/
   end
+
+  it "should be a git repository" do
+    content = capture(:stdout) do
+      lambda { Hastie::ServerGenerator.start @input }.should_not raise_error SystemExit
+    end
+    git_proof = File.join(@output_dir, ".git")
+    File.directory?(git_proof).should == true
+  end
 end
 

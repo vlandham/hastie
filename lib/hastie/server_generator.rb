@@ -2,6 +2,7 @@ require 'fileutils'
 require 'hastie/constants'
 require 'hastie/config_file'
 require 'thor/group'
+require 'grit'
 
 module Hastie
   class ServerGenerator < Thor::Group
@@ -28,6 +29,14 @@ module Hastie
     end
 
     def create_git_repo
+      in_root do
+        say_status "note", "creating git repository in #{self.destination_root}"
+        repo = Grit::Repo.init(".")
+        all_files = Dir.glob("./**")
+        #all_files.each {|f| say_status "note", "adding #{f}"}
+        repo.add(all_files)
+        repo.commit_all("initial commit of server scaffold. created from hastie")
+      end
     end
   end
 end
