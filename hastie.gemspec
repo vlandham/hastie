@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.description = %q{}
   s.email = 'none@none.com'
   s.executables = `git ls-files -- bin/*`.split("\n").map{|f| File.basename(f)}
-  s.extra_rdoc_files = ['LICENSE', 'README.md']
+  s.extra_rdoc_files = ['LICENSE', 'README.textile']
   s.files = `git ls-files`.split("\n")
   s.homepage = 'http://github.com/vlandham/hastie'
   s.name = 'hastie'
