@@ -41,7 +41,7 @@ Hastie server_start options:
         Hastie::ReportGenerator.start ARGV
       when "watch", "monitor"
         puts "Starting Jekyll..."
-        exec("jekyll --auto --server #{ARGV}")
+        system("jekyll --auto --server")
       when "publish"
         Hastie::ReportPublisher.start ARGV
       when "config"
