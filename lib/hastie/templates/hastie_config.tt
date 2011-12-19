@@ -1,0 +1,6 @@
+server_root: <%= server_root %>
+type: <%= options[:type] %>
+<% if options[:analyst] %>
+analyst: <%= options[:analyst] %>
+<% end %>
+

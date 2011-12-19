@@ -18,6 +18,7 @@ Hastie Commands:
   watch   - Monitor current directory for changes.
             Updates local copy of report
   publish - Send report to server. Update published reports
+  config  - Create new hastie config file for communicating with server
   server_start - Create new server directory framework with given name
 
 Hastie start options:
@@ -43,6 +44,8 @@ Hastie server_start options:
         exec("jekyll --auto --server #{ARGV}")
       when "publish"
         Hastie::ReportPublisher.start ARGV
+      when "config"
+        Hastie::ConfigGenerator.start ARGV
       when "server_start"
         Hastie::ServerGenerator.start ARGV
       else
