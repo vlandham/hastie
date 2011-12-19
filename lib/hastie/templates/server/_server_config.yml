@@ -1,0 +1,15 @@
+source:      .
+destination: ./_site
+includes:    ./_includes
+
+pygments:    true
+markdown:    rdiscount
+permalink:   /:year-:month-:day_:title.html
+
+baseurl: /
+
+rdiscount:
+  extensions: []
+
+exclude: []
+
