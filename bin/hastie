@@ -4,9 +4,7 @@
 # require 'rubygems'
 # puts Gem.loaded_specs["jekyll"].bindir
 
-require 'hastie/report_generator'
-require 'hastie/report_publisher'
-require 'hastie/server_generator'
+require 'hastie'
 
 module Hastie
   module Executable
@@ -32,7 +30,6 @@ Hastie server_start options:
   Use 'hastie server_start -h' for more information on publish options
 
     HELP
-
 
     def self.execute(command, args)
       case command
