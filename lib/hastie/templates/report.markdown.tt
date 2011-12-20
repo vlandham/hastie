@@ -6,6 +6,8 @@ researcher: <%= options[:researcher] %>
 pi: <%= options[:pi] %>
 data:
 - <%= options[:data_dir] %>/
+categories: 
+- <%= options[:pi] %>
 ---
 
 ## Objective
