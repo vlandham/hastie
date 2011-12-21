@@ -24,7 +24,9 @@ describe Hastie::ReportGenerator do
     @config_file = File.expand_path(File.join(File.dirname(__FILE__), "fixtures", "hastie_config"))
     @server_dir = File.expand_path(File.join(File.dirname(__FILE__), "fixtures", "server"))
     @output_dir = File.expand_path(File.join(File.dirname(__FILE__), "sandbox"))
-    @input = [@output_dir, "--config_file", @config_file, "--server_root", @server_dir]
+    @date = "2011-11-31"
+    @input = [@output_dir, "--config_file", @config_file, "--server_root", @server_dir, "--date", @date]
+    @expected_report_name = File.join(@output_dir, "#{@date}-#{File.basename(@output_dir)}")
   end
 
   after :each do
@@ -36,7 +38,7 @@ describe Hastie::ReportGenerator do
       lambda { Hastie::ReportGenerator.start @input }.should_not raise_error SystemExit
     end
 
-    File.exists?(File.join(@output_dir, File.basename(@output_dir) + ".textile")).should == true
+    File.exists?(@expected_report_name + ".textile").should == true
     File.directory?(File.join(@output_dir, "imgs")).should == true
     File.directory?(File.join(@output_dir, "imgs", File.basename(@output_dir))).should == true
     File.directory?(File.join(@output_dir, "data")).should == true
@@ -50,6 +52,27 @@ describe Hastie::ReportGenerator do
     File.exists?(File.join(@output_dir, "report.yml")).should == true
   end
 
+
+  ["markdown", "textile"].each do |format|
+    it "should have default content" do
+      @input << "--type" << format
+      content = capture(:stdout) do
+        lambda { Hastie::ReportGenerator.start @input }.should_not raise_error SystemExit
+      end
+
+      report_file = File.join(@expected_report_name + "." + format)
+      File.exists?(report_file).should == true
+      report_file_content = read_file report_file
+
+      report_file_content.should match /layout: report/
+      report_file_content.should match /title: Sandbox/
+      report_file_content.should match /imgs:/
+      report_file_content.should match /data:/
+      report_file_content.should match /- data\/#{File.basename(@output_dir)}/
+      report_file_content.should match /- imgs\/#{File.basename(@output_dir)}/
+    end
+  end
+
   describe "input options" do
     it "--type" do
       @input << "--type" << "markdown"
@@ -57,7 +80,7 @@ describe Hastie::ReportGenerator do
         lambda { Hastie::ReportGenerator.start @input }.should_not raise_error SystemExit
       end
 
-      File.exists?(File.join(@output_dir, File.basename(@output_dir) + ".markdown")).should == true
+      File.exists?(File.join(@expected_report_name + ".markdown")).should == true
     end
 
     it "--analyst" do
@@ -65,7 +88,7 @@ describe Hastie::ReportGenerator do
       content = capture(:stdout) do
         lambda { Hastie::ReportGenerator.start @input }.should_not raise_error SystemExit
       end
-      report_file = File.join(@output_dir, File.basename(@output_dir) + ".textile")
+      report_file = File.join(@expected_report_name + ".textile")
 
       File.exists?(report_file).should == true
       report_file_content = read_file report_file
@@ -78,7 +101,7 @@ describe Hastie::ReportGenerator do
       content = capture(:stdout) do
         lambda { Hastie::ReportGenerator.start @input }.should_not raise_error SystemExit
       end
-      report_file = File.join(@output_dir, File.basename(@output_dir) + ".textile")
+      report_file = File.join(@expected_report_name + ".textile")
 
       File.exists?(report_file).should == true
       report_file_content = read_file report_file
@@ -91,7 +114,7 @@ describe Hastie::ReportGenerator do
       content = capture(:stdout) do
         lambda { Hastie::ReportGenerator.start @input }.should_not raise_error SystemExit
       end
-      report_file = File.join(@output_dir, File.basename(@output_dir) + ".textile")
+      report_file = File.join(@expected_report_name + ".textile")
 
       File.exists?(report_file).should == true
       report_file_content = read_file report_file

@@ -14,11 +14,13 @@ module Hastie
     class_option :analyst, :aliases => "-a", :desc => "Analyst generating the report"
     class_option :researcher, :aliases => "-r", :desc => "Researcher the report is for"
     class_option :pi, :aliases => "-p", :desc => "PI the researcher is under"
+    class_option :date, :aliases => "-d", :desc => "Date to use in report filename. Ex: 2011-11-29", :default => "#{Time.now.strftime('%Y-%m-%d')}"
 
     def setup_variables
       options[:type] ||= "textile"
+      options[:date] ||= "#{Time.now.strftime('%Y-%m-%d')}"
       options[:name] = File.basename(name)
-      self.title = name.gsub("_", " ").capitalize
+      self.title = options[:name].gsub("_", " ").capitalize
       options[:title] = self.title
       # report_id will be used internally in case the name turns
       # out to be too loose to use
@@ -32,6 +34,7 @@ module Hastie
       options[:researcher] ||= "unknown"
       options[:pi] ||= "unknown"
       options[:data_dir] ||= data_dir
+      options[:imgs_dir] ||= imgs_dir
     end
 
     def check_name_availible
@@ -46,7 +49,7 @@ module Hastie
       say_status "create", "report directory: #{options[:report_id]}"
       extension = determine_extension(options[:type])
       template_file = "templates/report.#{extension}.tt"
-      report_filename = "#{report_id}.#{extension}"
+      report_filename = "#{options[:date]}-#{report_id}.#{extension}"
       say_status  "note", "report file: #{report_filename}"
       template template_file, report_filename
       options[:report_file] = report_filename
