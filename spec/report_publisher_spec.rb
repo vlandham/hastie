@@ -27,6 +27,9 @@ describe Hastie::ReportPublisher do
 
     FileUtils.cp_r @org_server_dir, @server_dir
     FileUtils.cp_r @org_report_dir, @report_dir
+
+    @report_name = File.basename(Dir.glob(File.join(@report_dir, "*.textile"))[0])
+
     Grit::Repo.init(@server_dir)
 
     @input = [@report_dir, "--config_file", @config_file, "--server_root", @server_dir]
@@ -41,12 +44,16 @@ describe Hastie::ReportPublisher do
       lambda { Hastie::ReportPublisher.start @input }.should_not raise_error SystemExit
     end
 
-    File.exists?(File.join(@server_dir, "_posts", "report.textile")).should == true
+    File.exists?(File.join(@server_dir, "_posts", @report_name)).should == true
     File.exists?(File.join(@server_dir, "imgs", "report")).should == true
     File.exists?(File.join(@server_dir, "data", "report")).should == true
   end
 
+  it "should add report to _reports.yml" do
+  end
+
   it "should update git repository with new commit" do
+    Hastie::ReportPublisher.start @input
     content = capture(:stdout) do
       lambda { Hastie::ReportPublisher.start @input }.should_not raise_error SystemExit
     end

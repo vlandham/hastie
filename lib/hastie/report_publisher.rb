@@ -70,7 +70,7 @@ module Hastie
         say_status "publishing", img_dir
         FileUtils.cp_r img_dir, destination_img_dir
       else
-        say_status "warning", "report image directory not found #{img_dir}"
+        say_status "warning", "report image directory not found #{img_dir}", :yellow
       end
     end
 
@@ -81,7 +81,19 @@ module Hastie
         say_status "publishing", data_dir
         FileUtils.cp_r data_dir, destination_dir
       else
-        say_status "warning", "report data directory not found #{data_dir}"
+        say_status "warning", "report data directory not found #{data_dir}", :yellow
+      end
+    end
+
+    def add_to_reports_file
+      in_root do
+        say_status "note", "modifying #{SERVER_REPORTS_FILE}"
+        say_status "note", " to include #{options[:local]["report_id"]}"
+        server_report_file = SERVER_REPORTS_FILE
+        if !File.exists? server_report_file
+          say_status "error", "Cannot find #{SERVER_REPORTS_FILE} file in server directory:", :red
+        end
+        ConfigFile.append(server_report_file, options[:local]["report_id"])
       end
     end
 
@@ -92,6 +104,20 @@ module Hastie
         all_files = Dir.glob("./**")
         repo.add(all_files)
         repo.commit_all("update with report: #{options[:local]["report_id"]}")
+      end
+    end
+
+    def publish_with_jekyll
+      in_root do
+        say_status "publishing", "updating server reports", :yellow
+        config_file = File.expand_path(File.join(FileUtils.getwd, SERVER_CONFIG_FILE))
+        server_config_file = File.expand_path(File.join(FileUtils.getwd, SERVER_PUBLISH_CONFIG_FILE))
+        if File.exists?(server_config_file)
+          config_file = server_config_file
+        end
+        say_status "config", config_file
+        command = "jekyll --config #{config_file}"
+        system(command)
       end
     end
   end
