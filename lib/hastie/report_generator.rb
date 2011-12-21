@@ -16,7 +16,7 @@ module Hastie
     class_option :pi, :aliases => "-p", :desc => "PI the researcher is under"
 
     def setup_variables
-      options[:type] ||= "markdown"
+      options[:type] ||= "textile"
       options[:name] = File.basename(name)
       self.title = name.gsub("_", " ").capitalize
       options[:title] = self.title
