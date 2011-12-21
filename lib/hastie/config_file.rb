@@ -27,5 +27,16 @@ module Hastie
       File.open(filename, 'w') {|file| file.puts output_data}
     end
 
+    # very lazy. very limited
+    # only use for _reports.yml
+    def self.append filename, data
+      if !File.exists? filename
+        puts "ERROR: #{filename} not found"
+        return
+      end
+      File.open(filename, 'a') do |file|
+        file.puts "- #{data}"
+      end
+    end
   end
 end
