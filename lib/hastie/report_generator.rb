@@ -87,8 +87,8 @@ module Hastie
                     when :html,:htm
                       "html"
                     else
-                      say "WARNING: #{report_type} not a valid type. Defaulting to markdown"
-                      "markdown"
+                      say "WARNING: #{report_type} not a valid type. Defaulting to textile"
+                      "textile"
                     end
         extension
       end
