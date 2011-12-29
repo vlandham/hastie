@@ -1,6 +1,7 @@
 static:
 - css
 - js
+- imgs
 - _layouts
 - _includes
 - _plugins
