@@ -45,7 +45,6 @@ describe Hastie::ReportPublisher do
     end
 
     File.exists?(File.join(@server_dir, "_posts", @report_name)).should == true
-    File.exists?(File.join(@server_dir, "imgs", "report")).should == true
     File.exists?(File.join(@server_dir, "data", "report")).should == true
   end
 

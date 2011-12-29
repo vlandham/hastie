@@ -34,7 +34,6 @@ module Hastie
       options[:researcher] ||= "unknown"
       options[:pi] ||= "unknown"
       options[:data_dir] ||= data_dir
-      options[:imgs_dir] ||= imgs_dir
     end
 
     def check_name_availible
@@ -55,12 +54,8 @@ module Hastie
       options[:report_file] = report_filename
     end
 
-    def create_image_dir
-      create_file File.join(data_dir, ".gitignore"), :verbose => true
-    end
-
     def create_data_dir
-      create_file File.join(imgs_dir, ".gitignore"), :verbose => true
+      create_file File.join(data_dir, ".gitignore"), :verbose => true
     end
 
     def fetch_static_files
@@ -98,10 +93,6 @@ module Hastie
 
       def data_dir
         File.join(DATA_ROOT, options[:report_id])
-      end
-
-      def imgs_dir
-        File.join(IMGS_ROOT, options[:report_id])
       end
     end
   end

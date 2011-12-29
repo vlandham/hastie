@@ -39,8 +39,6 @@ describe Hastie::ReportGenerator do
     end
 
     File.exists?(@expected_report_name + ".textile").should == true
-    File.directory?(File.join(@output_dir, "imgs")).should == true
-    File.directory?(File.join(@output_dir, "imgs", File.basename(@output_dir))).should == true
     File.directory?(File.join(@output_dir, "data")).should == true
     File.directory?(File.join(@output_dir, "data", File.basename(@output_dir))).should == true
     File.directory?(File.join(@output_dir, "_layouts")).should == true
@@ -66,10 +64,8 @@ describe Hastie::ReportGenerator do
 
       report_file_content.should match /layout: report/
       report_file_content.should match /title: Sandbox/
-      report_file_content.should match /imgs:/
       report_file_content.should match /data:/
       report_file_content.should match /- data\/#{File.basename(@output_dir)}/
-      report_file_content.should match /- imgs\/#{File.basename(@output_dir)}/
     end
   end
 

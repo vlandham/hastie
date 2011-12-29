@@ -63,17 +63,6 @@ module Hastie
       end
     end
 
-    def copy_img_directory
-      img_dir = File.join(report_dir, IMGS_ROOT, options[:local]["report_id"])
-      destination_img_dir = File.join(options[:server_root], IMGS_ROOT)
-      if File.exists? img_dir
-        say_status "publishing", img_dir
-        FileUtils.cp_r img_dir, destination_img_dir
-      else
-        say_status "warning", "report image directory not found #{img_dir}", :yellow
-      end
-    end
-
     def copy_data_directory
       data_dir = File.join(report_dir, DATA_ROOT, options[:local]["report_id"])
       destination_dir = File.join(options[:server_root], DATA_ROOT)

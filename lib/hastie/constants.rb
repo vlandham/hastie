@@ -5,7 +5,6 @@ module Hastie
   SERVER_PUBLISH_CONFIG_FILE = "_server_config.yml"
 
   DATA_ROOT = "data"
-  IMGS_ROOT = "imgs"
   REPORT_CONFIG_FILE = "report.yml"
 
   def self.config_file

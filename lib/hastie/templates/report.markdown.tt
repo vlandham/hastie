@@ -6,8 +6,6 @@ researcher: <%= options[:researcher] %>
 pi: <%= options[:pi] %>
 data:
 - <%= options[:data_dir] %>/
-imgs:
-- <%= options[:imgs_dir] %>/
 categories: 
 - <%= options[:pi] %>
 ---
