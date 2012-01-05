@@ -47,11 +47,18 @@ module Hastie
     def create_report_file
       say_status "create", "report directory: #{options[:report_id]}"
       extension = determine_extension(options[:type])
+      options[:extension] = extension
       template_file = "templates/report.#{extension}.tt"
       report_filename = "#{options[:date]}-#{report_id}.#{extension}"
       say_status  "note", "report file: #{report_filename}"
       template template_file, report_filename
       options[:report_file] = report_filename
+      options[:report_file_generated] = File.basename(report_filename, File.extname(report_filename)) + ".html"
+    end
+
+    def create_index_file
+      template_file = "templates/report_index.html.tt"
+      template template_file, "index.html"
     end
 
     def create_data_dir

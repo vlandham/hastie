@@ -1,0 +1,13 @@
+---
+layout: default
+---
+
+<h1>Report</h1>
+
+<a id="report_link" href="<%= options[:report_file_generated] %>"><%= options[:title] %></a>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  $("#report_link").click();
+});
+</script>

@@ -48,8 +48,22 @@ describe Hastie::ReportGenerator do
     File.directory?(File.join(@output_dir, "_includes")).should == true
     File.exists?(File.join(@output_dir, "_config.yml")).should == true
     File.exists?(File.join(@output_dir, "report.yml")).should == true
+    File.exists?(File.join(@output_dir, "index.html")).should == true
   end
 
+  it "should provide link in index file to html page" do
+    content = capture(:stdout) do
+      lambda { Hastie::ReportGenerator.start @input }.should_not raise_error SystemExit
+    end
+
+    index_file = File.join(@output_dir, "index.html")
+    File.exists?(index_file).should == true
+
+    index_content = read_file index_file
+
+    index_content.should match /href="#{File.basename(@expected_report_name)}.html/
+
+  end
 
   ["markdown", "textile"].each do |format|
     it "should have default content" do
