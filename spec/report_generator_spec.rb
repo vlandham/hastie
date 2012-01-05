@@ -61,7 +61,7 @@ describe Hastie::ReportGenerator do
 
     index_content = read_file index_file
 
-    index_content.should match /href="#{File.basename(@expected_report_name)}.html/
+    index_content.should match /url=#{File.basename(@expected_report_name)}.html/
 
   end
 

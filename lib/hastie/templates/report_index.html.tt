@@ -1,13 +1,8 @@
----
-layout: default
----
-
-<h1>Report</h1>
-
+<html>
+<head>
+<meta http-equiv="Refresh" content="0;url=<%= options[:report_file_generated] %>" />
+</head>
+<body>
 <a id="report_link" href="<%= options[:report_file_generated] %>"><%= options[:title] %></a>
-
-<script type="text/javascript">
-$(document).ready(function() {
-  $("#report_link").click();
-});
-</script>
+</body>
+</html>
