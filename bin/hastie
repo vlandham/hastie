@@ -9,26 +9,29 @@ require 'hastie'
 module Hastie
   module Executable
     HELP = <<-HELP
-Usage: hastie <OPTIONS> [COMMAND]
+Usage: hastie [COMMAND] <OPTIONS>
 
 Hastie Commands:
   version - Print version number and exit
   help    - Print this help and exit
-  start   - Create new report directory framework with given name
+  create  - Create new report directory framework with given name
   watch   - Monitor current directory for changes.
             Updates local copy of report
   publish - Send report to server. Update published reports
   config  - Create new hastie config file for communicating with server
-  server_start - Create new server directory framework with given name
+  create_server - Create new server directory framework with given name
 
-start options:
-  Use 'hastie start -h' for more information on start options
+create options:
+  Use 'hastie create -h' for more information on start options
 
 publish options:
   Use 'hastie publish -h' for more information on publish options
 
-server_start options:
-  Use 'hastie server_start -h' for more information on publish options
+config options:
+  Use 'hastie config -h' for more information on publish options
+
+create_server options:
+  Use 'hastie create_server -h' for more information on publish options
 
     HELP
 
@@ -37,16 +40,16 @@ server_start options:
       when "version"
         require 'hastie/version'
         puts Hastie::VERSION
-      when "start","create"
+      when "create", "start"
         Hastie::ReportGenerator.start ARGV
       when "watch", "monitor"
         puts "Starting Jekyll..."
         system("jekyll --auto --server")
-      when "publish"
+      when "publish", "update"
         Hastie::ReportPublisher.start ARGV
       when "config"
         Hastie::ConfigGenerator.start ARGV
-      when "server_start"
+      when "create_server","server_start"
         Hastie::ServerGenerator.start ARGV
       else
         puts Hastie::Executable::HELP

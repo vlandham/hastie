@@ -5,6 +5,10 @@ require 'hastie/server_reader'
 
 module Hastie
   class ReportPublisher < ServerReader
+    def self.banner
+      "hastie publish <REPORT_DIR> <OPTIONS>"
+    end
+
     attr_accessor :report_dir
     desc "Publishes report to server"
     argument :name, :type => :string, :default => ".", :desc => "The name report directory"

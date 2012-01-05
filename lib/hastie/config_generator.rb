@@ -4,6 +4,11 @@ require 'hastie/constants'
 module Hastie
   class ConfigGenerator < Thor::Group
     include Thor::Actions
+
+    def self.banner
+      "hastie config [SERVER_ROOT] <OPTIONS>"
+    end
+
     argument :server_root, :type => :string, :desc => "Root path of server location"
     class_option :path, :aliases => "-p", :desc => "Root directory of where the config file will be written to", :default => File.expand_path("~")
     class_option :name, :aliases => "-n", :desc => "Name of the config file", :default => ".hastie"

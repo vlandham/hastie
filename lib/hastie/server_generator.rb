@@ -7,6 +7,11 @@ require 'grit'
 module Hastie
   class ServerGenerator < Thor::Group
     include Thor::Actions
+
+    def self.banner
+      "hastie create_server [NAME]"
+    end
+
     desc "Creates framework for new server"
     argument :name, :type => :string, :desc => "The dir of the new server location. no spaces"
 

@@ -5,6 +5,9 @@ require 'hastie/server_reader'
 
 module Hastie
   class ReportGenerator < ServerReader
+    def self.banner
+      "hastie create [NAME] <OPTIONS>"
+    end
 
     attr_accessor :report_id, :title, :analyst, :researcher, :pi
 
