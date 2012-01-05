@@ -9,7 +9,7 @@ require 'hastie'
 module Hastie
   module Executable
     HELP = <<-HELP
-Usage: hastie [ command ] <command-options>
+Usage: hastie <OPTIONS> [COMMAND]
 
 Hastie Commands:
   version - Print version number and exit
@@ -21,13 +21,13 @@ Hastie Commands:
   config  - Create new hastie config file for communicating with server
   server_start - Create new server directory framework with given name
 
-Hastie start options:
+start options:
   Use 'hastie start -h' for more information on start options
 
-Hastie publish options:
+publish options:
   Use 'hastie publish -h' for more information on publish options
 
-Hastie server_start options:
+server_start options:
   Use 'hastie server_start -h' for more information on publish options
 
     HELP
