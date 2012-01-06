@@ -4,5 +4,6 @@
 
 require 'hastie/report_generator'
 require 'hastie/report_publisher'
+require 'hastie/report_updater'
 require 'hastie/server_generator'
 require 'hastie/config_generator'
