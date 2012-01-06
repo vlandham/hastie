@@ -48,8 +48,16 @@ module Hastie
       end
     end
 
+    def check_destination
+      if File.exists? self.destination_root
+        say_status "error", "#{self.destination_root} already exists.", :red
+        say_status "error", "please choose different output directory", :red
+        exit(1)
+      end
+    end
+
     def create_report_file
-      say_status "create", "report directory: #{options[:report_id]}"
+      say_status "create", "report: #{options[:report_id]}"
       extension = determine_extension(options[:type])
       options[:extension] = extension
       template_file = "templates/report.#{extension}.tt"
