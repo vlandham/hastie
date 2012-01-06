@@ -4,31 +4,69 @@ A tool to extend Jekyll for use in report creation.
 
 h2. What is Hastie?
 
+Hastie works with "Jekyll":https://github.com/vlandham/jekyll to create a powerful and flexible system by which reports can be created by different individuals and uploaded to a central 'server'.
+
+h2. Why Hastie?
+
+Say you work in an office that generates data, and reports about that data, for clients (so, for example, a core Bioinformatics facility providing results to various research labs). 
+
+The reports you generate typically come as a mix of Word documents, Excel spreadsheets, and external data files. Everyone in your office creates these reports differently. They are stored in various locations, in various folders on networked drives. They have different levels of information, and generally are a hassle to create and update.
+
+Consumers of these reports (i.e. the researchers you generated them for) have to navigate confusing and disparate network paths to find these reports. They have to have Word, Excel, and whatever other programs you have (and the right versions of these programs) installed on the computer they are using, and have to have them all open at the same time to see their report and data. 
+
+In short, there is a high cost for both encoding and decoding this information. Its a lose lose situation. 
+
+Hastie is a component of a small suite of tools to facilitate faster encoding and decoding of this data. Attempting to lower the requirements of producing and consuming reports - so producers (analysts) can generate bigger, better, reports faster and more consistent with their co-workers, and consumers (researchers) can get to their data with less hand-holding and fewer hoops to jump through.
+
+h2. What part does Hastie play?
+
+Hastie serves as a simple interface between the creators of the reports and the report system itself. It takes care of all the back-end silliness, and lets you create and publish reports quickly and easily.
+
+Hastie is a command-line tool that communicates with the report server (really just a jekyll source directory). It creates a framework for building up a report, allows you to develop this report locally, with whatever tools you are most comfortable with, and then easily publish this report so that it can be shared with others.
+
+h2. Hastie's associates
+
+Hastie is one piece of the puzzle for better, faster, more consistent reports. You also need:
+* "Jekyll":https://github.com/vlandham/jekyll - a static site generator that has lots of power behind it to allow customization galore. Jekyll is built for blogs - but with Hastie's help, it makes a mighty fine report system as well.
+** Hastie requires a custom build of Jekyll that includes some missing features to be fully functional.
+** Hopefully in the future, these features will be integrated back into Jekyll proper.
+* A Jekyll site framework. Jekyll allows for plugins and layouts and other components. Hastie also expects some additional files present in its 'Jekyll Sever' to work.
+** Check out "bioreports":https://github.com/vlandham/bioreports for an example of such a site framework.
+
+
 h2. Hastie features
 
 <pre>
-Usage: hastie [ command ] <command-options>
+Usage: hastie [COMMAND] <OPTIONS>
 
 Hastie Commands:
   version - Print version number and exit
   help    - Print this help and exit
-  start   - Create new report directory framework with given name
+  create  - Create new report directory framework with given name
   watch   - Monitor current directory for changes.
             Updates local copy of report
   publish - Send report to server. Update published reports
-  server_start - Create new server directory framework with given name
+  update  - Update local report directory with changes from report server
+  config  - Create new hastie config file for communicating with server
+  create_server - Create new server directory framework with given name
 
-Hastie start options:
-  Use 'hastie start -h' for more information on start options
+create options:
+  Use 'hastie create -h' for more information on start options
 
-Hastie publish options:
+publish options:
   Use 'hastie publish -h' for more information on publish options
 
-Hastie server_start options:
-  Use 'hastie server_start -h' for more information on publish options
+update options:
+  Use 'hastie update -h' for more information on publish options
+
+config options:
+  Use 'hastie config -h' for more information on publish options
+
+create_server options:
+  Use 'hastie create_server -h' for more information on publish options
 </pre>
 
 
 h2. Whats in a name?
 
-In Strange Case of Dr. Jekyll and Mr. Hyde, "Dr. Hastie Lanyon":http://en.wikipedia.org/wiki/Strange_Case_of_Dr_Jekyll_and_Mr_Hyde#Dr_Hastie_Lanyon finds Jekyll ideas *too fanciful*.
+In Strange Case of Dr. Jekyll and Mr. Hyde, "Dr. Hastie Lanyon":http://en.wikipedia.org/wiki/Strange_Case_of_Dr_Jekyll_and_Mr_Hyde#Dr_Hastie_Lanyon finds Jekyll's ideas *too fanciful*.
