@@ -18,6 +18,7 @@ module Hastie
     class_option :researcher, :aliases => "-r", :desc => "Researcher the report is for"
     class_option :pi, :aliases => "-p", :desc => "PI the researcher is under"
     class_option :date, :aliases => "-d", :desc => "Date to use in report filename. Ex: 2011-11-29", :default => "#{Time.now.strftime('%Y-%m-%d')}"
+    class_option :output, :aliases => "-o", :desc => "Output Directory for report", :default => File.join(".", "report")
 
     def setup_variables
       options[:type] ||= "textile"
@@ -29,7 +30,7 @@ module Hastie
       # out to be too loose to use
       self.report_id = File.basename(name)
       options[:report_id] = self.report_id
-      self.destination_root = File.join(File.dirname(name), self.report_id)
+      self.destination_root = options[:output]
       say_status "note", "root: #{self.destination_root}"
 
       options[:analyst] ||= "unknown"

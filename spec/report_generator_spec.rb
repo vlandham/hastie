@@ -25,7 +25,7 @@ describe Hastie::ReportGenerator do
     @server_dir = File.expand_path(File.join(File.dirname(__FILE__), "fixtures", "server"))
     @output_dir = File.expand_path(File.join(File.dirname(__FILE__), "sandbox"))
     @date = "2011-11-31"
-    @input = [@output_dir, "--config_file", @config_file, "--server_root", @server_dir, "--date", @date]
+    @input = ["sandbox", "-o", @output_dir, "--config_file", @config_file, "--server_root", @server_dir, "--date", @date]
     @expected_report_name = File.join(@output_dir, "#{@date}-#{File.basename(@output_dir)}")
   end
 
