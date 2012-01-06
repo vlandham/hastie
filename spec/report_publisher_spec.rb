@@ -49,6 +49,11 @@ describe Hastie::ReportPublisher do
   end
 
   it "should add report to _reports.yml" do
+    content = capture(:stdout) do
+      lambda { Hastie::ReportPublisher.start @input }.should_not raise_error SystemExit
+    end
+    reports_content = read_file(File.join(@server_dir, "_reports.yml"))
+    reports_content.should match /#{File.basename(@report_dir)}/
   end
 
   it "should update git repository with new commit" do
