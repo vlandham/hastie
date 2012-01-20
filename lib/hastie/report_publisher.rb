@@ -96,6 +96,7 @@ module Hastie
         repo = Grit::Repo.new(".")
         # ensure we are on the server branch
         repo.git.native :checkout, {}, 'server'
+        repo = Grit::Repo.new(".")
         all_files = Dir.glob("./**")
         repo.add(all_files)
         repo.commit_all("update with report: #{options[:local]["report_id"]}")
