@@ -94,6 +94,8 @@ module Hastie
       in_root do
         say_status "note", "updating git repository"
         repo = Grit::Repo.new(".")
+        # ensure we are on the server branch
+        repo.git.native :checkout, {}, 'server'
         all_files = Dir.glob("./**")
         repo.add(all_files)
         repo.commit_all("update with report: #{options[:local]["report_id"]}")
