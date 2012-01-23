@@ -6,6 +6,8 @@ h2. Using Hastie
 
 Assuming you have hastie installed, what are the steps to start using it? These steps also assume you have a compatible jekyll installed as well as a jekyll blog framework, such as bioreports. See below for more info on jekyll and bioreports.
 
+h3. hastie config
+
 First, setup your @.hastie@ config file to point to your bioreports path
 
 <pre>
@@ -13,6 +15,8 @@ hastie config /path/to/bioreports/source -a jfv -t textile
 </pre>
 
 This creates a @.hastie@ file in your home directory. The @-a@ flag indicates the analyst (your username) to set. The @-t@ flag tells hastie to generate textile documents for your reports.
+
+h3. hastie create
 
 Now you are ready to generate a new report. Navigate to the directory that you would like the report to be created in, and create it with @hastie create@:
 
@@ -25,6 +29,8 @@ This will create a new directory called @report@ with your new report inside. Th
 
 Inside your report directory will be a number of files and sub-directories to get your report started. Many of these files are copied directly from the server you supplied in your config file.
 
+h3. hastie watch
+
 Now start editing your report. It will be inside your @report@ directory, and be named @date_report_name.textile@. Watch changes to your report as you modify this file using @hastie watch@:
 
 <pre>
@@ -34,6 +40,8 @@ hastie watch
 </pre>
 
 Hastie watch really just starts jekyll and builds your report locally. But this helps so that you don't have to remember any new commands. 
+
+h3. hastie publish
 
 Now you have some info in your report, and you would like to publish it to the main server. That's where @hastie publish@ comes in:
 
@@ -45,6 +53,17 @@ hastie publish
 This will copy your important files to the server in your @.hastie@ file and then run jekyll there. It will also check in this change to your server's git repository.
 
 And that's all there is to creating a new report! @create@, @watch@, and @publish@.
+
+h3. NOTE
+
+Users may get an error in @read_yaml@ about an *invalid byte sequence*. To fix this, modify your @.bashrc@ to include:
+
+<pre>
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+</pre>
+
+This is "documented in a jekyll issue":https://github.com/mojombo/jekyll/issues/188
 
 h2. What is Hastie?
 
