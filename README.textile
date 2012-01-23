@@ -4,7 +4,7 @@ A tool to extend Jekyll for use in report creation.
 
 h2. What is Hastie?
 
-Hastie works with "Jekyll":https://github.com/vlandham/jekyll to create a powerful and flexible system by which reports can be created by different individuals and uploaded to a central 'server'.
+Hastie works with "Jekyll":https://github.com/metalhelix/jekyll to create a powerful and flexible system by which reports can be created by different individuals and uploaded to a central 'server'.
 
 h2. Why Hastie?
 
@@ -27,11 +27,11 @@ Hastie is a command-line tool that communicates with the report server (really j
 h2. Hastie's associates
 
 Hastie is one piece of the puzzle for better, faster, more consistent reports. You also need:
-* "Jekyll":https://github.com/vlandham/jekyll - a static site generator that has lots of power behind it to allow customization galore. Jekyll is built for blogs - but with Hastie's help, it makes a mighty fine report system as well.
+* "Jekyll":https://github.com/metalhelix/jekyll - a static site generator that has lots of power behind it to allow customization galore. Jekyll is built for blogs - but with Hastie's help, it makes a mighty fine report system as well.
 ** Hastie requires a custom build of Jekyll that includes some missing features to be fully functional.
 ** Hopefully in the future, these features will be integrated back into Jekyll proper.
 * A Jekyll site framework. Jekyll allows for plugins and layouts and other components. Hastie also expects some additional files present in its 'Jekyll Sever' to work.
-** Check out "bioreports":https://github.com/vlandham/bioreports for an example of such a site framework.
+** Check out "bioreports":https://github.com/metalhexlix/bioreports for an example of such a site framework.
 
 
 h2. Hastie features
