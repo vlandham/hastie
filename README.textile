@@ -2,6 +2,50 @@ h1. Hastie
 
 A tool to extend Jekyll for use in report creation.
 
+h2. Using Hastie
+
+Assuming you have hastie installed, what are the steps to start using it? These steps also assume you have a compatible jekyll installed as well as a jekyll blog framework, such as bioreports. See below for more info on jekyll and bioreports.
+
+First, setup your @.hastie@ config file to point to your bioreports path
+
+<pre>
+hastie config /path/to/bioreports/source -a jfv -t textile
+</pre>
+
+This creates a @.hastie@ file in your home directory. The @-a@ flag indicates the analyst (your username) to set. The @-t@ flag tells hastie to generate textile documents for your reports.
+
+Now you are ready to generate a new report. Navigate to the directory that you would like the report to be created in, and create it with @hastie create@:
+
+<pre>
+cd /path/to/report/base
+hastie create analysis_of_sample_x -r ada -p hym
+</pre>
+
+This will create a new directory called @report@ with your new report inside. The flags set meta data about the report. @-r@ for the researcher this report is for and @-p@ for the PI or lead researcher of the researcher specified by @-r@. These flags are optional. This data can be easily added later to your report if you forget.
+
+Inside your report directory will be a number of files and sub-directories to get your report started. Many of these files are copied directly from the server you supplied in your config file.
+
+Now start editing your report. It will be inside your @report@ directory, and be named @date_report_name.textile@. Watch changes to your report as you modify this file using @hastie watch@:
+
+<pre>
+cd report
+vim 2011-02-04_analysis_of_sample_x.textile
+hastie watch
+</pre>
+
+Hastie watch really just starts jekyll and builds your report locally. But this helps so that you don't have to remember any new commands. 
+
+Now you have some info in your report, and you would like to publish it to the main server. That's where @hastie publish@ comes in:
+
+<pre>
+# ctrl-c to kill hastie watch
+hastie publish
+</pre>
+
+This will copy your important files to the server in your @.hastie@ file and then run jekyll there. It will also check in this change to your server's git repository.
+
+And that's all there is to creating a new report! @create@, @watch@, and @publish@.
+
 h2. What is Hastie?
 
 Hastie works with "Jekyll":https://github.com/metalhelix/jekyll to create a powerful and flexible system by which reports can be created by different individuals and uploaded to a central 'server'.
@@ -17,6 +61,7 @@ Consumers of these reports (i.e. the researchers you generated them for) have to
 In short, there is a high cost for both encoding and decoding this information. Its a lose lose situation. 
 
 Hastie is a component of a small suite of tools to facilitate faster encoding and decoding of this data. Attempting to lower the requirements of producing and consuming reports - so producers (analysts) can generate bigger, better, reports faster and more consistent with their co-workers, and consumers (researchers) can get to their data with less hand-holding and fewer hoops to jump through.
+
 
 h2. What part does Hastie play?
 
