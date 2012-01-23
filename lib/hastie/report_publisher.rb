@@ -97,6 +97,12 @@ module Hastie
         # ensure we are on the server branch
         repo.git.native :checkout, {}, 'server'
         repo = Grit::Repo.new(".")
+        if repo.head.name != "server"
+          say_status "error", "Remote git not on server branch", :red
+          say_status "error", "Please git checkout server", :red
+          say_status "error", "Current branch: #{repo.head.name}", :red
+          exit(1)
+        end
         all_files = Dir.glob("./**")
         repo.add(all_files)
         repo.commit_all("update with report: #{options[:local]["report_id"]}")

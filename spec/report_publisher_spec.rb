@@ -1,4 +1,5 @@
 require 'grit'
+require 'fileutils'
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 require File.expand_path(File.dirname(__FILE__) + '/fakefs_helper')
 require 'hastie/report_publisher'
@@ -29,8 +30,13 @@ describe Hastie::ReportPublisher do
     FileUtils.cp_r @org_report_dir, @report_dir
 
     @report_name = File.basename(Dir.glob(File.join(@report_dir, "*.textile"))[0])
-
-    Grit::Repo.init(@server_dir)
+    FileUtils.cd(@server_dir) do
+      system("git init .")
+      system("git add .")
+      system("git commit -m \"initial commit\"")
+      system("git branch server")
+      system("git checkout server")
+    end
 
     @input = [@report_dir, "--config_file", @config_file, "--server_root", @server_dir]
   end
@@ -57,12 +63,11 @@ describe Hastie::ReportPublisher do
   end
 
   it "should update git repository with new commit" do
-    Hastie::ReportPublisher.start @input
     content = capture(:stdout) do
       lambda { Hastie::ReportPublisher.start @input }.should_not raise_error SystemExit
     end
 
-    commits = Grit::Repo.new(@server_dir).commits
+    commits = Grit::Repo.new(@server_dir).commits('server',1)
     commits[0].message.should match /update with report: report/
   end
 
