@@ -13,7 +13,7 @@ module Hastie
     class_option :path, :aliases => "-p", :desc => "Root directory of where the config file will be written to", :default => File.expand_path("~")
     class_option :name, :aliases => "-n", :desc => "Name of the config file", :default => ".hastie"
     class_option :analyst, :aliases => "-a", :desc => "Analyst for reports generated with this config file"
-    class_option :type, :aliases => "-t", :desc => "Default format of reports to generate", :default => "markdown"
+    class_option :type, :aliases => "-t", :desc => "Default format of reports to generate", :default => "textile"
 
     def self.source_root
       File.dirname(__FILE__)
