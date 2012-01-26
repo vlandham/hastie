@@ -112,12 +112,12 @@ module Hastie
     def publish_with_jekyll
       in_root do
         say_status "publishing", "updating server reports", :yellow
-        config_file = File.expand_path(File.join(FileUtils.getwd, SERVER_CONFIG_FILE))
-        server_config_file = File.expand_path(File.join(FileUtils.getwd, SERVER_PUBLISH_CONFIG_FILE))
+        config_file = File.expand_path(File.join(FileUtils.getwd, Hastie.watch_config_file))
+        server_config_file = File.expand_path(File.join(FileUtils.getwd, Hastie.publish_config_file))
         if File.exists?(server_config_file)
           config_file = server_config_file
         end
-        say_status "config", config_file
+        say_status "config", config_file, :yellow
         command = "jekyll --config #{config_file}"
         system(command)
       end
