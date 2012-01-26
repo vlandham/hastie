@@ -43,15 +43,15 @@ module Hastie
       url = "http://0.0.0.0:#{port}"
       say_status "open", url
 
-      pid = fork do
-        begin
-          require 'launchy'
-          sleep 4
-          Launchy.open(url)
-        rescue LoadError
-        rescue
-        end
-      end
+      # pid = fork do
+      #   begin
+      #     require 'launchy'
+      #     sleep 4
+      #     Launchy.open(url)
+      #   rescue LoadError
+      #   rescue
+      #   end
+      # end
 
       in_root do
         exec("jekyll --auto --server")
