@@ -1,9 +1,6 @@
 #!/usr/bin/env ruby
 # -*- mode: ruby -*-
 
-# require 'rubygems'
-# puts Gem.loaded_specs["jekyll"].bindir
-
 require 'hastie'
 
 module Hastie
@@ -47,8 +44,7 @@ create_server options:
       when "create", "start"
         Hastie::ReportGenerator.start ARGV
       when "watch", "monitor"
-        puts "Starting Jekyll..."
-        system("jekyll --auto --server")
+        Hastie::ReportWatcher.start ARGV
       when "publish"
         Hastie::ReportPublisher.start ARGV
       when "update"

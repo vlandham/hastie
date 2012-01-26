@@ -14,4 +14,12 @@ module Hastie
   def self.report_config_name
     REPORT_CONFIG_FILE
   end
+
+  def self.watch_config_file
+    SERVER_CONFIG_FILE
+  end
+
+  def self.publish_config_file
+    SERVER_PUBLISH_CONFIG_FILE
+  end
 end
