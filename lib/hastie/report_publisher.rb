@@ -62,7 +62,7 @@ module Hastie
         say_status "publishing", report_filename
         # FileUtils.cp local_report, destination_report
         command = "cp #{local_report} #{destination_report}"
-        `command`
+        `#{command}`
       else
         say_status "error", "Report file not found: #{report_filename}", :red
         exit(1)
@@ -75,8 +75,8 @@ module Hastie
       if File.exists? data_dir
         say_status "publishing", data_dir
         command = "cp -r #{data_dir} #{destination_dir}"
-        `command`
-        # FileUtils.cp_r data_dir, destination_dir
+        `#{command}`
+         # FileUtils.cp_r data_dir, destination_dir
       else
         say_status "warning", "report data directory not found #{data_dir}", :yellow
       end
