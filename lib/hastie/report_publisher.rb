@@ -58,13 +58,24 @@ module Hastie
       report_filename = options[:local]["report_file"]
       local_report = File.join(report_dir, report_filename)
       destination_report = File.join(options[:server_root], options[:server]["reports_dir"], report_filename)
-      if File.exists? local_report
-        say_status "publishing", report_filename
-        command = "cp #{local_report} #{destination_report}"
+
+      if File.exists? destination_report
+        say_status "removing", destination_report, :yellow
+        command = "rm -f #{destination_report}"
         pid = Process.fork do
           exec(command)
         end
         Process.waitpid(pid)
+      end
+
+      if File.exists? local_report
+        say_status "publishing", report_filename
+        # command = "cp #{local_report} #{destination_report}"
+        # pid = Process.fork do
+        #   exec(command)
+        # end
+        # Process.waitpid(pid)
+        FileUtils.cp local_report, destination_report
       else
         say_status "error", "Report file not found: #{report_filename}", :red
         exit(1)
@@ -88,11 +99,12 @@ module Hastie
 
       if File.exists? data_dir
         say_status "publishing", data_dir
-        command = "cp -r #{data_dir} #{destination_dir}"
-        pid = Process.fork do
-          exec(command)
-        end
-        Process.waitpid(pid)
+        # command = "cp -r #{data_dir} #{destination_dir}"
+        # pid = Process.fork do
+        #   exec(command)
+        # end
+        # Process.waitpid(pid)
+        FileUtils.cp_r data_dir, destination_dir
       else
         say_status "warning", "report data directory not found #{data_dir}", :yellow
       end
