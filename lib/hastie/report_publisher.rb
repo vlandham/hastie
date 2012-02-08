@@ -60,7 +60,6 @@ module Hastie
       destination_report = File.join(options[:server_root], options[:server]["reports_dir"], report_filename)
       if File.exists? local_report
         say_status "publishing", report_filename
-        # FileUtils.cp local_report, destination_report
         command = "cp #{local_report} #{destination_report}"
         pid = Process.fork do
           exec(command)
@@ -75,6 +74,18 @@ module Hastie
     def copy_data_directory
       data_dir = File.join(report_dir, DATA_ROOT, options[:local]["report_id"])
       destination_dir = File.join(options[:server_root], DATA_ROOT)
+
+      existing_destination_dir = File.join(destination_dir, options[:local]["report_id"])
+
+      if File.exists? existing_destination_dir
+        say_status "removing", existing_destination_dir, :yellow
+        command = "rm -rf #{existing_destination_dir}"
+        pid = Process.fork do
+          exec(command)
+        end
+        Process.waitpid(pid)
+      end
+
       if File.exists? data_dir
         say_status "publishing", data_dir
         command = "cp -r #{data_dir} #{destination_dir}"
@@ -82,7 +93,6 @@ module Hastie
           exec(command)
         end
         Process.waitpid(pid)
-         # FileUtils.cp_r data_dir, destination_dir
       else
         say_status "warning", "report data directory not found #{data_dir}", :yellow
       end
@@ -103,6 +113,7 @@ module Hastie
     def update_git_repo
       in_root do
         say_status "note", "updating git repository"
+        Grit::Git.git_timeout = 25
         repo = Grit::Repo.new(".")
         # ensure we are on the server branch
         repo.git.native :checkout, {}, 'server'
