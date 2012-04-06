@@ -15,6 +15,7 @@ describe Hastie::ReportWatcher do
 
   before :each do
     @config_file = File.expand_path(File.join(File.dirname(__FILE__), "fixtures", "hastie_config"))
+    @config_ru_file = File.expand_path(File.join(File.dirname(__FILE__), "fixtures", "config.ru"))
     @org_server_dir = File.expand_path(File.join(File.dirname(__FILE__), "fixtures", "server"))
     @org_report_dir = File.expand_path(File.join(File.dirname(__FILE__), "fixtures", "report"))
 
@@ -39,7 +40,7 @@ describe Hastie::ReportWatcher do
   it "should not error if in a report dir" do
     content = ""
     pid = fork do
-      content = capture(:stdout) do
+      content = capture(:stderr) do
         lambda { Hastie::ReportWatcher.start @input }.should_not raise_error SystemExit
       end
     end
@@ -48,6 +49,7 @@ describe Hastie::ReportWatcher do
 
     Process.kill 'INT', pid
     Process.wait pid
+    puts content
   end
 
   it "should raise errror if not in a report dir" do
@@ -55,6 +57,26 @@ describe Hastie::ReportWatcher do
     content = capture(:stdout) do
       lambda { Hastie::ReportWatcher.start input }.should raise_error SystemExit
     end
+  end
+
+  it "should start sinatra if config.ru file is present" do
+    FileUtils.cp_r @config_ru_file, @report_dir
+
+    # Hastie::ReportWatcher.start @input
+
+    content = ""
+    pid = fork do
+      content = capture(:stderr) do
+        lambda { Hastie::ReportWatcher.start @input }#.should_not raise_error SystemExit
+      end
+    end
+
+    sleep 5
+
+    Process.kill 'INT', pid
+    Process.wait pid
+    puts "SINATRA:"
+    puts content
   end
 
 end

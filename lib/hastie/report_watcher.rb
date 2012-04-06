@@ -43,19 +43,23 @@ module Hastie
       url = "http://0.0.0.0:#{port}"
       say_status "open", url
 
-      # pid = fork do
-      #   begin
-      #     require 'launchy'
-      #     sleep 4
-      #     Launchy.open(url)
-      #   rescue LoadError
-      #   rescue
-      #   end
-      # end
-
       in_root do
-        exec("jekyll --auto --server")
+        if !File.exist?("config.ru")
+          # use built in method
+          exec("jekyll --auto --server")
+        else
+          # use thin method
+          jekyllPid = Process.spawn("jekyll --auto")
+          thinPid = Process.spawn("thin -p #{port} -R config.ru start")
+          trap("INT") {
+            [jekyllPid, thinPid].each { |pid| Process.kill(9, pid) rescue Errno::ESRCH }
+            exit 0
+          }
+
+          [jekyllPid, thinPid].each { |pid| Process.wait(pid) }
+        end
       end
+
     end
   end
 end
