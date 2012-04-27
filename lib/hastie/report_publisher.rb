@@ -122,25 +122,25 @@ module Hastie
       end
     end
 
-    def update_git_repo
-      in_root do
-        say_status "note", "updating git repository"
-        Grit::Git.git_timeout = 25
-        repo = Grit::Repo.new(".")
-        # ensure we are on the server branch
-        repo.git.native :checkout, {}, 'server'
-        repo = Grit::Repo.new(".")
-        if repo.head.name != "server"
-          say_status "error", "Remote git not on server branch", :red
-          say_status "error", "Please git checkout server", :red
-          say_status "error", "Current branch: #{repo.head.name}", :red
-          exit(1)
-        end
-        all_files = Dir.glob("./**")
-        repo.add(all_files)
-        repo.commit_all("update with report: #{options[:local]["report_id"]}")
-      end
-    end
+    # def update_git_repo
+    #   in_root do
+    #     say_status "note", "updating git repository"
+    #     Grit::Git.git_timeout = 25
+    #     repo = Grit::Repo.new(".")
+    #     # ensure we are on the server branch
+    #     repo.git.native :checkout, {}, 'server'
+    #     repo = Grit::Repo.new(".")
+    #     if repo.head.name != "server"
+    #       say_status "error", "Remote git not on server branch", :red
+    #       say_status "error", "Please git checkout server", :red
+    #       say_status "error", "Current branch: #{repo.head.name}", :red
+    #       exit(1)
+    #     end
+    #     all_files = Dir.glob("./**")
+    #     repo.add(all_files)
+    #     repo.commit_all("update with report: #{options[:local]["report_id"]}")
+    #   end
+    # end
 
     def publish_with_jekyll
       in_root do

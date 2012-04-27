@@ -62,14 +62,14 @@ describe Hastie::ReportPublisher do
     reports_content.should match /#{File.basename(@report_dir)}/
   end
 
-  it "should update git repository with new commit" do
-    content = capture(:stdout) do
-      lambda { Hastie::ReportPublisher.start @input }.should_not raise_error SystemExit
-    end
+  # it "should update git repository with new commit" do
+  #   content = capture(:stdout) do
+  #     lambda { Hastie::ReportPublisher.start @input }.should_not raise_error SystemExit
+  #   end
 
-    commits = Grit::Repo.new(@server_dir).commits('server',1)
-    commits[0].message.should match /update with report: report/
-  end
+  #   commits = Grit::Repo.new(@server_dir).commits('server',1)
+  #   commits[0].message.should match /update with report: report/
+  # end
 
 end
 
