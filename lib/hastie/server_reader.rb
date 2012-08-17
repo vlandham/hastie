@@ -7,13 +7,13 @@ require 'hastie/constants'
 module Hastie
   class ServerReader < Thor::Group
     include Thor::Actions
-    class_option :server_root, :aliases => "-s", :desc => "Root directory of the server to read / publish to"
     class_option :config_file, :aliases => "-c", :desc => "Path to .hastie config file", :default => Hastie.config_file
+    class_option :server_root, :aliases => "-s", :desc => "Root directory of the server to read / publish to"
 
     no_tasks do
       def config_file
         @config_file ||= if options[:config_file]
-                           File.expand_path(options[:config_file]) 
+                           File.expand_path(options[:config_file])
                            else
                              Hastie.config_file
                            end
