@@ -6,6 +6,8 @@ module Hastie
 
   DATA_ROOT = "data"
   REPORT_CONFIG_FILE = "report.yml"
+  DEFAULT_REPORT_DIR = "report"
+  DEFAULT_ID_DOMAIN = "cbio"
 
   def self.config_file
     CONFIG_FILE
@@ -21,5 +23,13 @@ module Hastie
 
   def self.publish_config_file
     SERVER_PUBLISH_CONFIG_FILE
+  end
+
+  def self.default_report_dir
+    DEFAULT_REPORT_DIR
+  end
+
+  def self.id_domain
+    DEFAULT_ID_DOMAIN
   end
 end

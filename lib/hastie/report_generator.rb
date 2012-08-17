@@ -1,42 +1,81 @@
 require 'fileutils'
 require 'hastie/config_file'
 require 'hastie/constants'
+require 'hastie/id_server'
 require 'hastie/server_reader'
 
 module Hastie
   class ReportGenerator < ServerReader
     def self.banner
-      "hastie create [NAME] <OPTIONS>"
+      "hastie create -p [PI] -r [RESERACHER] <OPTIONS>"
     end
 
-    attr_accessor :report_id, :title, :analyst, :researcher, :pi
+    attr_accessor :report_id, :title, :researcher, :pi
 
     desc "Creates framework for new report"
-    argument :name, :type => :string, :desc => "The name of the new report. no spaces"
+    class_option :id, :aliases => "-i", :type => :string, :desc => "Overrides using ID server. Provide custom ID."
+    class_option :pi, :aliases => "-p", :required => true, :desc => "PI the researcher is under"
+    class_option :researcher, :aliases => "-r", :required => true, :desc => "Researcher the report is for"
     class_option :type, :aliases => "-t", :desc => "Type of report to generate"
     class_option :analyst, :aliases => "-a", :desc => "Analyst generating the report"
-    class_option :researcher, :aliases => "-r", :desc => "Researcher the report is for"
-    class_option :pi, :aliases => "-p", :desc => "PI the researcher is under"
     class_option :date, :aliases => "-d", :desc => "Date to use in report filename. Ex: 2011-11-29", :default => "#{Time.now.strftime('%Y-%m-%d')}"
-    class_option :output, :aliases => "-o", :desc => "Output Directory for report", :default => File.join(".", "report")
+    class_option :output, :aliases => "-o", :desc => "Output Directory for report"
+
+    class_option :id_server, :desc => "URL of ID server to use"
+    class_option :id_domain, :desc => "ID domain to use", :default => Hastie.id_domain
+
+    class_option :only_report, :type => :boolean, :desc => "Only output report and not rest of directory structure", :default => false
+
+    def setup_id
+      if !options[:id]
+        id_server = Hastie::IdServer.new(options[:id_server], options[:id_domain])
+        self.report_id = id_server.request_id(options[:pi], options[:researcher])
+        options[:id] = self.report_id
+      else
+        self.report_id = options[:id]
+      end
+      options[:name] = options[:id]
+
+      say_status "note", "id: #{options[:id]}"
+      say_status "note", "name: #{options[:name]}"
+    end
+
+    # output directory now means two different things depending on :only_report
+    # :only_report = true then :output means name of the report directory
+    # :only_report = false then :output means the starting location for the
+    #   project directory structure
+    def setup_destination
+      if options[:only_report]
+        if !options[:output]
+          options[:output] = File.join(".", Hastie.default_report_dir)
+        end
+        self.destination_root = options[:output]
+      else
+        if !options[:output]
+          options[:output] = "."
+        end
+        self.destination_root = File.join(options[:output], options[:id])
+      end
+
+      say_status "note", "root: #{self.destination_root}"
+    end
+
+    def create_directory_structure
+      unless options[:only_report]
+        directory(File.join("templates", "project"), self.destination_root)
+        self.destination_root = File.join(self.destination_root, Hastie.default_report_dir)
+      end
+    end
 
     def setup_variables
+      options[:pi] ||= "unknown"
+      options[:researcher] ||= "unknown"
       options[:type] ||= "textile"
       options[:date] ||= "#{Time.now.strftime('%Y-%m-%d')}"
-      options[:name] = File.basename(name)
       self.title = options[:name].gsub("_", " ").capitalize
       options[:title] = self.title
-      # report_id will be used internally in case the name turns
-      # out to be too loose to use
-      self.report_id = File.basename(name)
-      options[:report_id] = self.report_id
-      self.destination_root = options[:output]
-      say_status "note", "root: #{self.destination_root}"
 
       options[:analyst] ||= "unknown"
-      self.analyst = options[:analyst] || "unknown"
-      options[:researcher] ||= "unknown"
-      options[:pi] ||= "unknown"
       options[:data_dir] ||= data_dir
     end
 
@@ -57,7 +96,7 @@ module Hastie
     end
 
     def create_report_file
-      say_status "create", "report: #{options[:report_id]}"
+      say_status "create", "report: #{options[:id]}"
       extension = determine_extension(options[:type])
       options[:extension] = extension
       template_file = "templates/report.#{extension}.tt"
@@ -111,7 +150,7 @@ module Hastie
       end
 
       def data_dir
-        File.join(DATA_ROOT, options[:report_id])
+        File.join(DATA_ROOT, options[:id])
       end
     end
   end
