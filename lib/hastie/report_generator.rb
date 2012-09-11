@@ -29,9 +29,16 @@ module Hastie
 
     def setup_id
       if !options[:id]
-        id_server = Hastie::IdServer.new(options[:id_server], options[:id_domain])
-        self.report_id = id_server.request_id(options[:pi], options[:researcher])
-        options[:id] = self.report_id
+        if options[:id_server] and options[:id_domain]
+          id_server = Hastie::IdServer.new(options[:id_server], options[:id_domain])
+          self.report_id = id_server.request_id(options[:pi], options[:researcher])
+          options[:id] = self.report_id
+        else
+          say_status "error", "No ID server found", :red
+          say_status "error", " Provide --id_server and --id_domain", :red
+          say_status "error", " Or use --id to specify the ID of your report", :red
+          exit(1)
+        end
       else
         self.report_id = options[:id]
       end
