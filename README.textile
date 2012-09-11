@@ -35,6 +35,10 @@ The Project directory, @cbio_101@ will now contain these sub-directories:
   |__ report
   |
   |__ data
+  |   |
+  |   |__ input
+  |   |
+  |   |__ output
   |
   |__ code
   |
