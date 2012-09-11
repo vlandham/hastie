@@ -18,14 +18,29 @@ This creates a @.hastie@ file in your home directory. The @-a@ flag indicates th
 
 h3. hastie create
 
-Now you are ready to generate a new report. Navigate to the directory that you would like the report to be created in, and create it with @hastie create@:
+Now you are ready to generate a new report. Navigate to your base project directory, and create it with @hastie create@:
 
 <pre>
 cd /path/to/report/base
-hastie create analysis_of_sample_x -r ada -p hym
+hastie create -i cbio_101 -r ada -p hym
 </pre>
 
-This will create a new directory called @report@ with your new report inside. The flags set meta data about the report. @-r@ for the researcher this report is for and @-p@ for the PI or lead researcher of the researcher specified by @-r@. These flags are optional. This data can be easily added later to your report if you forget.
+This will create a new directory called @cbio_101@ with a series of directories inside it. The flags set meta data about the report. @-r@ for the researcher this report is for and @-p@ for the PI or lead researcher of the researcher specified by @-r@.
+
+The Project directory, @cbio_101@ will now contain these sub-directories:
+
+<pre>
+ --cbio_101
+  |
+  |__ report
+  |
+  |__ data
+  |
+  |__ code
+  |
+  |__ notes
+
+</pre>
 
 Inside your report directory will be a number of files and sub-directories to get your report started. Many of these files are copied directly from the server you supplied in your config file.
 
