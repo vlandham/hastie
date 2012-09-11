@@ -9,7 +9,7 @@ data:
 - <%= options[:data_dir] %>/
 ---
 
-h2. Period: 08/10/2012~09/13/2012
+h2. Overview Period:
 
 <div class="note">
 *SUMMARY*

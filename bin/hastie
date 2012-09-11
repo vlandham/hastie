@@ -54,8 +54,10 @@ create_server options:
       when "create_server","server_start"
         Hastie::ServerGenerator.start ARGV
       when "overview"
-        options = ["--template","overview","--id", "aaa", "--only_report", "--pi", "cbio", "--researcher", "cbio"]
-        Hastie::ReportGenerator.start options
+        id = Time.now.strftime('%b-%Y')
+        options = ["--template","overview","--id", id, "--only_report", "--pi", "cbio", "--researcher", "cbio"]
+        ARGV.unshift(options)
+        Hastie::ReportGenerator.start ARGV
       else
         puts Hastie::Executable::HELP
       end
