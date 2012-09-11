@@ -44,6 +44,8 @@ The Project directory, @cbio_101@ will now contain these sub-directories:
 
 Inside your report directory will be a number of files and sub-directories to get your report started. Many of these files are copied directly from the server you supplied in your config file.
 
+You can generate *just* the report directory by using the @--only-report@ flag.
+
 h3. hastie watch
 
 Now start editing your report. It will be inside your @report@ directory, and be named @date_report_name.textile@. Watch changes to your report as you modify this file using @hastie watch@:
