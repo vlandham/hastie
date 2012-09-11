@@ -54,6 +54,18 @@ module Hastie
       say_status "note", "root: #{self.destination_root}"
     end
 
+    def create_lock_file
+      lock_file = File.join(self.destination_root, "lock.txt")
+      if File.exists?(lock_file)
+        say_status "error", "Another user is currently publishing to server", :red
+        say_status "error", "Please wait", :red
+        exit(1)
+      end
+      File.open(lock_file, 'w') do |file|
+        file.puts Time.now.strftime('%Y-%m-%d %H:%M')
+      end
+    end
+
     def copy_report_file
       report_filename = options[:local]["report_file"]
       local_report = File.join(report_dir, report_filename)
@@ -157,6 +169,11 @@ module Hastie
         end
         Process.waitpid(pid)
       end
+    end
+
+    def remove_lock_file
+      lock_file = File.join(self.destination_root, "lock.txt")
+      system("rm -f #{lock_file}")
     end
   end
 end

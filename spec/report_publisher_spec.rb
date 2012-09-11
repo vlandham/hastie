@@ -30,13 +30,13 @@ describe Hastie::ReportPublisher do
     FileUtils.cp_r @org_report_dir, @report_dir
 
     @report_name = File.basename(Dir.glob(File.join(@report_dir, "*.textile"))[0])
-    FileUtils.cd(@server_dir) do
-      system("git init .")
-      system("git add .")
-      system("git commit -m \"initial commit\"")
-      system("git branch server")
-      system("git checkout server")
-    end
+    # FileUtils.cd(@server_dir) do
+    #   system("git init .")
+    #   system("git add .")
+    #   system("git commit -m \\"initial commit\\"")
+    #   system("git branch server")
+    #   system("git checkout server")
+    # end
 
     @input = [@report_dir, "--config_file", @config_file, "--server_root", @server_dir]
   end
@@ -52,6 +52,17 @@ describe Hastie::ReportPublisher do
 
     File.exists?(File.join(@server_dir, "_posts", @report_name)).should == true
     File.exists?(File.join(@server_dir, "data", "report")).should == true
+  end
+
+  it "should prevent publish when lock file is present" do
+    lock_file = File.join(@server_dir, "lock.txt")
+    system("touch #{lock_file}")
+    content = capture(:stdout) do
+      lambda { Hastie::ReportPublisher.start @input }.should raise_error SystemExit
+    end
+
+    File.exists?(File.join(@server_dir, "_posts", @report_name)).should_not == true
+    File.exists?(File.join(@server_dir, "data", "report")).should_not == true
   end
 
   it "should add report to _reports.yml" do
