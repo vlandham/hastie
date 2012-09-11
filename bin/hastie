@@ -53,6 +53,9 @@ create_server options:
         Hastie::ConfigGenerator.start ARGV
       when "create_server","server_start"
         Hastie::ServerGenerator.start ARGV
+      when "overview"
+        options = ["--template","overview","--id", "aaa", "--only_report", "--pi", "cbio", "--researcher", "cbio"]
+        Hastie::ReportGenerator.start options
       else
         puts Hastie::Executable::HELP
       end

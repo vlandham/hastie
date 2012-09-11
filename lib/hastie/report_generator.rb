@@ -17,6 +17,7 @@ module Hastie
     class_option :pi, :aliases => "-p", :required => true, :desc => "PI the researcher is under"
     class_option :researcher, :aliases => "-r", :required => true, :desc => "Researcher the report is for"
     class_option :type, :aliases => "-t", :desc => "Type of report to generate"
+    class_option :template, :desc => "Template to use for creating report", :default => "report"
     class_option :analyst, :aliases => "-a", :desc => "Analyst generating the report"
     class_option :date, :aliases => "-d", :desc => "Date to use in report filename. Ex: 2011-11-29", :default => "#{Time.now.strftime('%Y-%m-%d')}"
     class_option :output, :aliases => "-o", :desc => "Output Directory for report"
@@ -68,14 +69,14 @@ module Hastie
     end
 
     def setup_variables
-      options[:pi] ||= "unknown"
-      options[:researcher] ||= "unknown"
+      options[:pi] ||= "cbio"
+      options[:researcher] ||= "cbio"
       options[:type] ||= "textile"
       options[:date] ||= "#{Time.now.strftime('%Y-%m-%d')}"
       self.title = options[:name].gsub("_", " ").capitalize
       options[:title] = self.title
 
-      options[:analyst] ||= "unknown"
+      options[:analyst] ||= "cbio"
       options[:data_dir] ||= data_dir
     end
 
@@ -98,8 +99,13 @@ module Hastie
     def create_report_file
       say_status "create", "report: #{options[:id]}"
       extension = determine_extension(options[:type])
+      template_name = options[:template]
       options[:extension] = extension
-      template_file = "templates/report.#{extension}.tt"
+      template_file = "templates/#{template_name}.#{extension}.tt"
+      if !File.exists? File.join(File.dirname(__FILE__), template_file)
+        say_status "error", "#{template_file} not present. Invalid Template.", :red
+        exit(1)
+      end
       report_filename = "#{options[:date]}-#{report_id}.#{extension}"
       say_status  "note", "report file: #{report_filename}"
       template template_file, report_filename

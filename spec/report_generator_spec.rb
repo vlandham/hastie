@@ -65,6 +65,23 @@ describe Hastie::ReportGenerator do
 
   end
 
+  describe "create overview page" do
+
+    before :each do
+      @input = ["--template", "overview", "-i", "sandbox", "-p", "ppp", "-r", "rrr", "-o", @output_dir, "--config_file", @config_file, "--server_root", @server_dir, "--date", @date, "--only_report"]
+      @expected_report_name = File.join(@output_dir, "#{@date}-#{File.basename(@output_dir)}")
+    end
+
+
+    it "should create scaffold files in output directory" do
+      content = capture(:stdout) do
+        lambda { Hastie::ReportGenerator.start @input }.should_not raise_error SystemExit
+      end
+
+      File.exists?(@expected_report_name + ".textile").should == true
+    end
+  end
+
   describe "basic functionality" do
 
     before :each do

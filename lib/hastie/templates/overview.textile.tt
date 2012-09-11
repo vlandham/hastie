@@ -1,0 +1,47 @@
+---
+layout: overview
+type: overview
+title: <%= title %>
+analyst: <%= options[:analyst] %>
+researcher: <%= options[:researcher] %> 
+pi: <%= options[:pi] %>
+data:
+- <%= options[:data_dir] %>/
+---
+
+h2. Period: 08/10/2012~09/13/2012
+
+<div class="note">
+*SUMMARY*
+
+</div>
+
+h3. New Projects
+
+{% table csv class = overview, format = textile %}
+PI, description, lead, report, comments, end date
+
+{% endtable %}
+
+
+h3. Ongoing Projects
+
+{% table csv class = overview, format = textile %}
+PI, description, lead, report, comments, end date
+
+{% endtable %}
+
+h3. Finished Projects
+
+{% table csv class = overview, format = textile %}
+PI, description, lead, report, comments, end date
+
+{% endtable %}
+
+h3. Pending Projects
+
+{% table csv class = overview, format = textile %}
+PI, description, lead, report, comments, end date
+
+{% endtable %}
+
