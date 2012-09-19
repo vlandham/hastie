@@ -11,12 +11,16 @@ Usage: hastie [COMMAND] <OPTIONS>
 Hastie Commands:
   version - Print version number and exit
   help    - Print this help and exit
+
   create  - Create new report directory framework with given name
   watch   - Monitor current directory for changes.
             Updates local copy of report
   publish - Send report to server. Update published reports
+
   update  - Update local report directory with changes from report server
   config  - Create new hastie config file for communicating with server
+
+  overview - Create a new overview page for documenting current status
   create_server - Create new server directory framework with given name
 
 create options:
