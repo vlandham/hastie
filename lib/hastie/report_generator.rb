@@ -44,6 +44,10 @@ module Hastie
       end
       options[:name] = options[:id]
 
+      # apparently :report_id is used when publishing.
+      # TODO: remove duplication between options[:id] and options[:report_id]
+      options[:report_id] = options[:id]
+
       say_status "note", "id: #{options[:id]}"
       say_status "note", "name: #{options[:name]}"
     end
