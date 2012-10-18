@@ -20,6 +20,8 @@ Hastie Commands:
   update  - Update local report directory with changes from report server
   config  - Create new hastie config file for communicating with server
 
+  info    - Provide information about existing reports in sub-directories
+
   overview - Create a new overview page for documenting current status
   create_server - Create new server directory framework with given name
 
@@ -53,6 +55,8 @@ create_server options:
         Hastie::ReportPublisher.start ARGV
       when "update"
         Hastie::ReportUpdater.start ARGV
+      when "info"
+        Hastie::Info.start ARGV
       when "config"
         Hastie::ConfigGenerator.start ARGV
       when "create_server","server_start"
