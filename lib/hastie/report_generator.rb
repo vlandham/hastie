@@ -7,14 +7,14 @@ require 'hastie/server_reader'
 module Hastie
   class ReportGenerator < ServerReader
     def self.banner
-      "hastie create -p [PI] -r [RESERACHER] <OPTIONS>"
+      "hastie create -l [LAB] -r [RESERACHER] <OPTIONS>"
     end
 
-    attr_accessor :report_id, :title, :researcher, :pi
+    attr_accessor :report_id, :title, :researcher, :lab
 
     desc "Creates framework for new report"
     class_option :id, :aliases => "-i", :type => :string, :desc => "Overrides using ID server. Provide custom ID."
-    class_option :pi, :aliases => "-p", :required => true, :desc => "PI the researcher is under"
+    class_option :lab, :aliases => "-l", :required => true, :desc => "Lab the researcher is under"
     class_option :researcher, :aliases => "-r", :required => true, :desc => "Researcher the report is for"
     class_option :type, :aliases => "-t", :desc => "Type of report to generate"
     class_option :template, :desc => "Template to use for creating report", :default => "report"
@@ -22,30 +22,42 @@ module Hastie
     class_option :date, :aliases => "-d", :desc => "Date to use in report filename. Ex: 2011-11-29", :default => "#{Time.now.strftime('%Y-%m-%d')}"
     class_option :output, :aliases => "-o", :desc => "Output Directory for report"
 
-    class_option :id_server, :desc => "URL of ID server to use"
-    class_option :id_domain, :desc => "ID domain to use", :default => Hastie.id_domain
+    class_option :id_server, :desc => "URL of ID server to use", :default => Hastie.id_server
+    class_option :id_issuer, :desc => "ID domain to use", :default => Hastie.id_issuer
 
     class_option :only_report, :type => :boolean, :desc => "Only output report and not rest of directory structure", :default => false
 
     def setup_id
       if !options[:id]
-        if options[:id_server] and options[:id_domain]
-          id_server = Hastie::IdServer.new(options[:id_server], options[:id_domain])
-          self.report_id = id_server.request_id(options[:pi], options[:researcher])
-          options[:id] = self.report_id
+        if options[:id_server] and options[:id_issuer]
+          id_server = Hastie::IdServer.new(options[:id_server], options[:id_issuer])
+          server_response = id_server.request_id(options[:lab], options[:researcher], options)
+
+          if server_response["project"] and server_response["project"]["id"]
+            self.report_id = server_response["project"]["id"]
+            options[:id] = self.report_id
+            options[:report_id] = self.report_id
+          else
+            say_status "error", "No ID provided by ID server", :red
+            say_status "error", "Check your ID server and try again", :red
+            puts server_response.inspect
+            exit(1)
+          end
         else
           say_status "error", "No ID server found", :red
-          say_status "error", " Provide --id_server and --id_domain", :red
+          say_status "error", " Provide --id_server and --id_issuer", :red
           say_status "error", " Or use --id to specify the ID of your report", :red
           exit(1)
         end
       else
         self.report_id = options[:id]
       end
+
       options[:name] = options[:id]
 
       # apparently :report_id is used when publishing.
       # TODO: remove duplication between options[:id] and options[:report_id]
+      self.report_id = options[:id]
       options[:report_id] = options[:id]
 
       say_status "note", "id: #{options[:id]}"
@@ -80,15 +92,16 @@ module Hastie
     end
 
     def setup_variables
-      options[:pi] ||= "cbio"
+      options[:lab] ||= "cbio"
       options[:researcher] ||= "cbio"
       options[:type] ||= "textile"
       options[:date] ||= "#{Time.now.strftime('%Y-%m-%d')}"
-      self.title = options[:name].gsub("_", " ").capitalize
+      self.title = options[:name].gsub("_", " ")
       options[:title] = self.title
 
       options[:analyst] ||= "cbio"
       options[:data_dir] ||= data_dir
+      options[:permalink] ||= "/#{options[:id]}.html"
     end
 
     def check_name_availible
@@ -121,7 +134,7 @@ module Hastie
       say_status  "note", "report file: #{report_filename}"
       template template_file, report_filename
       options[:report_file] = report_filename
-      options[:report_file_generated] = File.basename(report_filename, File.extname(report_filename)) + ".html"
+      options[:report_file_generated] = options[:permalink]
     end
 
     def create_index_file
