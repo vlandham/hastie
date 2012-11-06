@@ -14,6 +14,10 @@ module Hastie
       if options[:analyst]
         request["project"]["lead"] = options[:analyst]
       end
+
+      if options[:link]
+        request["project"]["link"] = options[:link]
+      end
       request.to_json
     end
 

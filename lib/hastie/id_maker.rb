@@ -1,6 +1,7 @@
 require 'fileutils'
 require 'hastie/constants'
 require 'hastie/config_file'
+require 'hastie/id_server'
 require 'thor/group'
 
 module Hastie
