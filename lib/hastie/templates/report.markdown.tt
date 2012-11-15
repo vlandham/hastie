@@ -3,7 +3,8 @@ layout: report
 title: <%= title %>
 analyst: <%= options[:analyst] %>
 researcher: <%= options[:researcher] %> 
-pi: <%= options[:pi] %>
+pi: <%= options[:lab] %>
+permalink: <%= options[:permalink] %>
 data:
 - <%= options[:data_dir] %>/
 categories: 

@@ -8,13 +8,27 @@ module Hastie
       self.domain = domain
     end
 
-    def request_id pi, researcher
-      request = {"issuer" => domain, "lab" => pi, "sponsor" => researcher, "project" =>
-        {"description" => "new project"}}.to_json
-      command = "curl -H \"Accept: application/json\" -H \"Content-type: application/json\" -X POST -d"
-      "#{self.domain}.tst.100 -d '#{request.to_s}' #{url}/projects"
-      puts command
-      "cbio.tst.1000"
+    def create_request pi, researcher, options = {}
+      request = {"issuer" => domain, "lab" => pi, "sponsor" => researcher}
+      request["project"] = {"description" => "new project", "status" => "new"}
+      if options[:analyst]
+        request["project"]["lead"] = options[:analyst]
+      end
+
+      if options[:link]
+        request["project"]["link"] = options[:link]
+      end
+      request.to_json
+    end
+
+    def request_id pi, researcher, options = {}
+      request = create_request(pi, researcher, options)
+      command = "curl --silent -H \"Accept: application/json\" -H \"Content-type: application/json\" -X POST -d '#{request.to_s}' #{self.root_url}/projects"
+      # "#{self.domain}.tst.100 -d '#{request.to_s}' #{url}/projects"
+      # puts command
+      response = `#{command}`
+      # puts response
+      JSON.parse(response)
     end
   end
 end

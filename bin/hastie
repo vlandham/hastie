@@ -66,6 +66,8 @@ create_server options:
         options = ["--template","overview","--id", id, "--output", id, "--only_report", "--pi", "cbio", "--researcher", "cbio"]
         options.concat(ARGV)
         Hastie::ReportGenerator.start options
+      when "id"
+        Hastie::IdMaker.start ARGV
       else
         puts Hastie::Executable::HELP
       end
