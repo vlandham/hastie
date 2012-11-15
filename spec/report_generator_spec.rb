@@ -42,7 +42,7 @@ describe Hastie::ReportGenerator do
   describe "project directory generation" do
     before :each do
       @report_id = "test.test.100"
-      @input = ["-i", @report_id, "-p", "ppp", "-r", "rrr", "-o", @output_dir, "--config_file", @config_file, "--server_root", @server_dir, "--date", @date]
+      @input = ["-i", @report_id, "-l", "ppp", "-r", "rrr", "-o", @output_dir, "--config_file", @config_file, "--server_root", @server_dir, "--date", @date]
       @expected_report_name = File.join(@output_dir,@report_id, "report", "#{@date}-#{File.basename(@report_id)}")
     end
 
@@ -68,7 +68,7 @@ describe Hastie::ReportGenerator do
   describe "create overview page" do
 
     before :each do
-      @input = ["--template", "overview", "-i", "sandbox", "-p", "ppp", "-r", "rrr", "-o", @output_dir, "--config_file", @config_file, "--server_root", @server_dir, "--date", @date, "--only_report"]
+      @input = ["--template", "overview", "-i", "sandbox", "-l", "ppp", "-r", "rrr", "-o", @output_dir, "--config_file", @config_file, "--server_root", @server_dir, "--date", @date, "--only_report"]
       @expected_report_name = File.join(@output_dir, "#{@date}-#{File.basename(@output_dir)}")
     end
 
@@ -85,8 +85,9 @@ describe Hastie::ReportGenerator do
   describe "basic functionality" do
 
     before :each do
-      @input = ["-i", "sandbox", "-p", "ppp", "-r", "rrr", "-o", @output_dir, "--config_file", @config_file, "--server_root", @server_dir, "--date", @date, "--only_report"]
+      @input = ["-i", "sandbox", "-l", "ppp", "-r", "rrr", "-o", @output_dir, "--config_file", @config_file, "--server_root", @server_dir, "--date", @date, "--only_report"]
       @expected_report_name = File.join(@output_dir, "#{@date}-#{File.basename(@output_dir)}")
+      @expected_output_name = File.join(@output_dir, "#{File.basename(@output_dir)}")
     end
 
 
@@ -119,7 +120,7 @@ describe Hastie::ReportGenerator do
 
       index_content = read_file index_file
 
-      index_content.should match /url=#{File.basename(@expected_report_name)}.html/
+      index_content.should match /url=\/#{File.basename(@expected_output_name)}.html/
 
     end
 
@@ -135,7 +136,7 @@ describe Hastie::ReportGenerator do
         report_file_content = read_file report_file
 
         report_file_content.should match /layout: report/
-        report_file_content.should match /title: Sandbox/
+        report_file_content.should match /title: sandbox/
         report_file_content.should match /data:/
         report_file_content.should match /- data\/#{File.basename(@output_dir)}/
       end
@@ -164,8 +165,8 @@ describe Hastie::ReportGenerator do
         report_file_content.should match /analyst: mcm/
       end
 
-      it "--pi" do
-        @input << "--pi" << "dad"
+      it "--lab" do
+        @input << "--lab" << "dad"
         content = capture(:stdout) do
           lambda { Hastie::ReportGenerator.start @input }.should_not raise_error SystemExit
         end
@@ -208,7 +209,7 @@ describe Hastie::ReportGenerator, fakefs: true do
       FakeFsHelper.add_published_report project
 
       content = capture(:stdout) do
-        lambda { ReportGeneratorChild.start ["-i", project, "-p", "ppp", "-r", "rrr", "--only_report"]}.should raise_error SystemExit
+        lambda { ReportGeneratorChild.start ["-i", project, "-l", "ppp", "-r", "rrr", "--only_report"]}.should raise_error SystemExit
       end
       content.should match /#{project} is already/
     end
