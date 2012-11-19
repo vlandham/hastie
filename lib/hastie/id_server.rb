@@ -10,13 +10,17 @@ module Hastie
 
     def create_request pi, researcher, options = {}
       request = {"issuer" => domain, "lab" => pi, "sponsor" => researcher}
-      request["project"] = {"description" => "new project", "status" => "new"}
+      request["project"] = {"description" => "", "status" => "new"}
       if options[:analyst]
         request["project"]["lead"] = options[:analyst]
       end
 
       if options[:link]
         request["project"]["link"] = options[:link]
+      end
+
+      if options[:description]
+        request["project"]["description"] = options[:description]
       end
       request.to_json
     end

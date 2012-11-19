@@ -19,6 +19,7 @@ module Hastie
     class_option :researcher, :aliases => "-r", :required => true, :desc => "Researcher the report is for"
     class_option :analyst, :aliases => "-a", :desc => "Analyst generating the report"
     class_option :link, :desc => "Link for the new project id"
+    class_option :description, :aliases => '-d', :desc => "description to add"
 
     class_option :id_server, :aliases => '-s', :desc => "URL of ID server to use", :default => Hastie.id_server
     class_option :id_issuer, :aliases => '-i', :desc => "ID domain to use", :default => Hastie.id_issuer

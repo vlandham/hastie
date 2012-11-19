@@ -25,7 +25,6 @@ module Hastie
 
     # code stolen from jekyll lib/jekyll/convertible.rb
     def read file_path
-      puts file_path
       self.content = File.read(file_path)
 
       begin
@@ -83,7 +82,7 @@ module Hastie
     end
 
     def collect_results
-      self.results << ["id", "pi", "researcher", "analyst", "date"]
+      self.results << ["id", "pi", "researcher", "analyst", "date", "file"]
       self.reports.each do |report|
         output_data  = []
         output_data << (report.data['title'] || "*")
@@ -91,6 +90,7 @@ module Hastie
         output_data << (report.data['researcher'] || "*")
         output_data << (report.data['analyst'] || "*")
         output_data << (report.meta['date'] || "*")
+        output_data << (report.file_path || "*")
 
         self.results << output_data
       end
