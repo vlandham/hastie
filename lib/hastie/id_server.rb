@@ -22,6 +22,13 @@ module Hastie
       if options[:description]
         request["project"]["description"] = options[:description]
       end
+
+      if options[:start_date]
+        request["project"]["start_date"] = options[:start_date]
+      end
+      if options[:end_date]
+        request["project"]["end_date"] = options[:end_date]
+      end
       request.to_json
     end
 
