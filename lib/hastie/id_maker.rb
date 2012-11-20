@@ -22,6 +22,7 @@ module Hastie
     class_option :description, :aliases => '-d', :desc => "description to add"
     class_option :start_date,  :desc => "start date in YEAR-month-day to add"
     class_option :end_date,  :desc => "end date in YEAR-month-day to add"
+    class_option :status,  :desc => "status to set the project to"
 
     class_option :id_server, :aliases => '-s', :desc => "URL of ID server to use", :default => Hastie.id_server
     class_option :id_issuer, :aliases => '-i', :desc => "ID domain to use", :default => Hastie.id_issuer
