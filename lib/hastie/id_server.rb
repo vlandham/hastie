@@ -10,7 +10,7 @@ module Hastie
 
     def create_request pi, researcher, options = {}
       request = {"issuer" => domain, "lab" => pi, "sponsor" => researcher}
-      request["project"] = {"description" => "", "status" => "new"}
+      request["project"] = {"description" => ""}
       if options[:analyst]
         request["project"]["lead"] = options[:analyst]
       end
