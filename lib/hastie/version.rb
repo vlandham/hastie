@@ -1,3 +1,3 @@
 module Hastie
-  VERSION = "1.1.6".freeze
+  VERSION = "2.0.0".freeze
 end
