@@ -31,7 +31,10 @@ module Hastie
       if !options[:id]
         if options[:id_server] and options[:id_issuer]
           id_server = Hastie::IdServer.new(options[:id_server], options[:id_issuer])
+          say_status "Note", "Acquiring id from server", :green
           server_response = id_server.request_id(options[:lab], options[:researcher], options)
+          say_status "Note", "Server response", :green
+          puts server_response.inspect
 
           if server_response["project"] and server_response["project"]["id"]
             self.report_id = server_response["project"]["id"]
